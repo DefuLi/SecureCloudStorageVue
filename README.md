@@ -55,6 +55,9 @@ SecureCloudStorageVue is a front-end management background integration solution.
 
 ## 运行项目
 ```bush
+// 配置node.js环境
+从官网下载nodejs，一路next安装完成。
+
 // 安装依赖
 npm install
 
