@@ -17,7 +17,7 @@ import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
 // 实际打包时应该不引入mock
 /* eslint-disable */
-if (process.env.NODE_ENV !== 'production') require('@/mock')
+// if (process.env.NODE_ENV !== 'production') require('@/mock')
 
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
@@ -31,7 +31,7 @@ installPlugin(Vue)
 /**
  * @description 生产环境关掉提示
  */
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 /**
  * @description 全局注册应用配置
  */
