@@ -17,6 +17,9 @@
 
 <script>
 import LoginForm from '_c/login-form'
+// import { login } from '../../api/user'
+// import { setToken } from '../../libs/util'
+// import { actions } from '../../store/module/user'
 import { mapActions } from 'vuex'
 export default {
   components: {
@@ -28,13 +31,43 @@ export default {
       'getUserInfo'
     ]),
     handleSubmit ({ userName, password }) {
-      this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
-            name: this.$config.homeName
+      // let _this = this
+      // this.handleLogin({ userName, password }).then(res => {
+      //   this.getUserInfo().then(res => {
+      //     console.log(res)
+      //     this.$router.push({
+      //       name: this.$config.homeName
+      //     })
+      //   })
+      // })
+      this.handleLogin({ userName, password })
+      // login({ userName, password })
+        .then(res => {
+          console.log('-----------获取登录信息---------------')
+          console.log(res)
+          this.getUserInfo().then(res => {
+            this.$router.push({
+              name: this.$config.homeName
+            })
           })
+          // this.$router.push({
+          //   name: this.$config.homeName
+          // })
+          // if (res.data.code === 1) {
+          //   // _this.$message({
+          //   //   message: '登录成功',
+          //   //   type: 'success'
+          //   // })
+          //   console.log('登录成功')
+          //   this.$store.commit('setToken', res.data.token)
+          //   this.$router.push({
+          //     name: this.$config.homeName
+          //   })
+          // } else {
+          //   this.notify('用户名或密码错误', 'error')
+          //   console.log('登录失败')
+          // }
         })
-      })
     }
   }
 }
