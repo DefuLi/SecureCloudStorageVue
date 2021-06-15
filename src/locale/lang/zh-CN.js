@@ -1,4 +1,5 @@
 export default {
+  file_manager: '文件管理器',
   home: '首页',
   login: '登录',
   components: '组件',

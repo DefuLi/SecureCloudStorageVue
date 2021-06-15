@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import iView from 'iview'
-import i18n from '@/locale'
+// import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
 import { directive as clickOutside } from 'v-click-outside-x'
@@ -15,18 +15,32 @@ import '@/assets/icons/iconfont.css'
 import TreeTable from 'tree-table-vue'
 import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import './plugin/element.js'
+
+// 引入树形下拉框
+import wl from 'wl-vue-select'
+import 'wl-vue-select/lib/wl-vue-select.css'
+
+import wlExplorer from 'wl-explorer'
+import 'wl-explorer/lib/wl-explorer.css'
+
+// import App from '@/view/file-manager/file-manager'
+Vue.use(wl)
+Vue.use(wlExplorer)
+
+
 // 实际打包时应该不引入mock
 /* eslint-disable */
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
 
-Vue.use(iView, {
-  i18n: (key, value) => i18n.t(key, value)
-})
+// Vue.use(iView, {
+//   i18n: (key, value) => i18n.t(key, value)
+// })
+
+
+Vue.use(iView)
 Vue.use(TreeTable)
 Vue.use(VOrgTree)
-Vue.use(ElementUI)
 /**
  * @description 注册admin内置插件
  */
@@ -49,7 +63,7 @@ Vue.directive('clickOutside', clickOutside)
 new Vue({
   el: '#app',
   router,
-  i18n,
+  // i18n,
   store,
   render: h => h(App)
 })
