@@ -66,98 +66,98 @@
 </template>
 
 <script>
-import WlExplorer from "@/pages/WlExplorer" // 导入文件管理器
-import fadeIn from "@/components/fade-in" // 导入文件管理器
-import submitBtn from "@/components/submit-btn" // 导入防抖提交组件
-import {closeOtherLayout, arrayToTree} from "@/util" // 导入关闭其他弹出类视图函数
+import WlExplorer from '@/pages/WlExplorer' // 导入文件管理器
+import fadeIn from '@/components/fade-in' // 导入文件管理器
+import submitBtn from '@/components/submit-btn' // 导入防抖提交组件
+import { closeOtherLayout, arrayToTree } from '@/util' // 导入关闭其他弹出类视图函数
 import {
   getFileListApi, // 1获取文件夹列表
   getAllFoldersApi, // 4获取全部文件夹
-  delFileApi, // 6删除文件|文件夹
-} from "@/api" // 导入接口
+  delFileApi // 6删除文件|文件夹
+} from '@/api' // 导入接口
 const apiok = 200
 export default {
-  name: "app",
+  name: 'app',
   components: {
     fadeIn,
     submitBtn,
-    WlExplorer,
+    WlExplorer
   },
-  data() {
+  data () {
     const _GB = 1024 * 1024
     // const vm = this
     return {
       load: {
-        folder: false,
+        folder: false
       }, // loading管理
       fade: {
-        folder: false,
+        folder: false
       }, // 弹出类视图管理
-      headerHandle: [{name: "权限", command: "auth"}], // 头部按钮更多操作-自定义权限
+      headerHandle: [{ name: '权限', command: 'auth' }], // 头部按钮更多操作-自定义权限
       file_table_columns: [
         {
-          label: "名称",
-          prop: "Name",
-          minWidth: 120,
+          label: '名称',
+          prop: 'Name',
+          minWidth: 120
         },
         {
-          label: "修改日期",
-          align: "center",
+          label: '修改日期',
+          align: 'center',
           width: 120,
-          formatter(row) {
-            return row.EditTime.split("T")[0] || "-"
-          },
+          formatter (row) {
+            return row.EditTime.split('T')[0] || '-'
+          }
         },
         {
-          label: "类型",
-          align: "center",
+          label: '类型',
+          align: 'center',
           width: 90,
-          formatter(row) {
-            return row.Type === 1 ? "文件夹" : row.SuffixName
-          },
+          formatter (row) {
+            return row.Type === 1 ? '文件夹' : row.SuffixName
+          }
         },
         {
-          label: "大小",
+          label: '大小',
           minWidth: 90,
-          align: "center",
-          formatter(row) {
-            if (row.Size === null) return "-"
+          align: 'center',
+          formatter (row) {
+            if (row.Size === null) return '-'
             if (row.Size < 1024) {
               // 1024以下显示kb
-              return row.Size + "KB"
+              return row.Size + 'KB'
             }
             if (row.Size < _GB) {
               // 1024*1024
               let _mb = (row.Size / 1024).toFixed(2)
-              return parseFloat(_mb) + "MB"
+              return parseFloat(_mb) + 'MB'
             }
             let _gb = (row.Size / _GB).toFixed(2)
-            return parseFloat(_gb) + "GB"
-          },
+            return parseFloat(_gb) + 'GB'
+          }
         },
         {
-          label: "创建日期",
-          align: "center",
+          label: '创建日期',
+          align: 'center',
           width: 120,
-          formatter(row) {
-            return row.CreateTime.split("T")[0] || "-"
-          },
+          formatter (row) {
+            return row.CreateTime.split('T')[0] || '-'
+          }
         },
         {
-          label: "作者",
+          label: '作者',
           minWidth: 100,
-          align: "center",
-          formatter(row) {
-            return row.CreateUserName || "-"
-          },
+          align: 'center',
+          formatter (row) {
+            return row.CreateUserName || '-'
+          }
         },
         {
-          label: "描述",
+          label: '描述',
           minWidth: 100,
-          formatter(row) {
-            return row.Describe || "-"
-          },
-        },
+          formatter (row) {
+            return row.Describe || '-'
+          }
+        }
       ], // 自定义表格列
       file_table_data: [], // 表格数据
       all_folder_list: [], // 所有文件夹列表
@@ -166,38 +166,38 @@ export default {
         folder: 1,
         img: 2,
         video: 3,
-        other: 4,
+        other: 4
       }, // 文件类型
       rource_type: {
-        self: 1, // 自建
+        self: 1 // 自建
       }, // 数据来源类型
       explorer_prop: {
-        name: "Name",
-        match: "Name",
+        name: 'Name',
+        match: 'Name',
         splic: true,
-        suffix: "SuffixName",
-        pathId: "Id",
-        pathPid: "ParentId",
-        pathName: "Name",
-        pathChildren: "Children", // String 路径数据 children字段
-        pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
-        pathParents: "Parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
-        pathIdentityId: "IdentityId", // String 路径数据自增长id
+        suffix: 'SuffixName',
+        pathId: 'Id',
+        pathPid: 'ParentId',
+        pathName: 'Name',
+        pathChildren: 'Children', // String 路径数据 children字段
+        pathConnector: '\\', // String 路径父子数据拼接连接符,默认为'\'
+        pathParents: 'Parents', // String 路径数据所有直系祖先节点自增长identityId逗号拼接
+        pathIdentityId: 'IdentityId' // String 路径数据自增长id
       }, // 文件管理器配置项
       path: {}, // 路径数据
       folder_form: {
-        ParentId: "",
-        Name: "",
+        ParentId: '',
+        Name: '',
         preview: [],
         handle: [],
-        Describe: "",
+        Describe: ''
       }, // 文件夹表单
       folder_rules: {
         ParentId: [
-          {required: true, message: "请选择文件路径", trigger: "blur"}
+          { required: true, message: '请选择文件路径', trigger: 'blur' }
         ],
         Name: [
-          {required: true, message: "请填写文件夹名称", trigger: "blur"}
+          { required: true, message: '请填写文件夹名称', trigger: 'blur' }
         ]
       }, // 文件夹表单验证
       child_act_saved: {}, // 存储子组件数据，用于编辑更新

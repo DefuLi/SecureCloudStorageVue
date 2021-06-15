@@ -61,10 +61,10 @@
  */
 
 export default {
-  data() {
+  data () {
     return {
-      fileList: [], // 已上传文件
-    };
+      fileList: [] // 已上传文件
+    }
   },
   props: {
     // 上传头信息
@@ -72,7 +72,7 @@ export default {
     // 上传地址
     url: {
       type: String,
-      default: "" // 通用上传地址
+      default: '' // 通用上传地址
     },
     // 上传参数
     options: Object,
@@ -89,41 +89,41 @@ export default {
     // 自定义校验函数
     regFuc: Function,
     // 上传个数限制
-    limit: Number,
+    limit: Number
   },
   methods: {
     // 手动上传
-    toUpload() {
-      this.$refs.upload.submit();
+    toUpload () {
+      this.$refs.upload.submit()
     },
     // 上传前验证
-    beforeUpload(file) {
-      this.$emit('beforeUpload', file);
+    beforeUpload (file) {
+      this.$emit('beforeUpload', file)
       // 不校验
-      if (!this.reg) return true;
+      if (!this.reg) return true
       // 自定义校验
-      if (this.regFuc) return this.regFuc(file);
+      if (this.regFuc) return this.regFuc(file)
     },
     // 上传成功回调
-    handleSuccess(res, file,fileList) {
-      this.$emit("uploadSuccess", res, file, fileList);
+    handleSuccess (res, file, fileList) {
+      this.$emit('uploadSuccess', res, file, fileList)
     },
     // 上传失败回调
-    handleError(err) {
-      this.$emit("uploadError", err);
+    handleError (err) {
+      this.$emit('uploadError', err)
     },
     // 文件超出限制
-    handleExceed() {
-      this.$message.error("超出文件上传个数限制，最大上传个数为：1！");
-    },
+    handleExceed () {
+      this.$message.error('超出文件上传个数限制，最大上传个数为：1！')
+    }
   },
   computed: {
     // 上传参数
-    upOptions() {
-      return this.options;
+    upOptions () {
+      return this.options
     }
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">

@@ -18,32 +18,32 @@ export default {
     url: String
     // options: Object
   },
-  mounted() {
+  mounted () {
     // 绑定键盘事件
-    window.addEventListener("keyup", this.audioClose, false);
+    window.addEventListener('keyup', this.audioClose, false)
   },
   methods: {
-    audioClose(e) {
-      if (e == "close") {
-        this.$emit("closeAudio");
-        return;
+    audioClose (e) {
+      if (e === 'close') {
+        this.$emit('closeAudio')
+        return
       }
 
       if (e.keyCode === 27) {
-        this.$emit("closeAudio");
+        this.$emit('closeAudio')
       }
     }
   },
   computed: {
-    audioUrl() {
-      return this.url;
+    audioUrl () {
+      return this.url
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 卸载键盘事件
-    window.removeEventListener("keyup", this.audioClose, false);
+    window.removeEventListener('keyup', this.audioClose, false)
   }
-};
+}
 </script>
 
 <style lang="scss">

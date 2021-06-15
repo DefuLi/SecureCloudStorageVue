@@ -13,32 +13,32 @@ export default {
       type: String
     }
   },
-  mounted() {
+  mounted () {
     // 绑定键盘事件
-    window.addEventListener("keyup", this.imgClose, false);
+    window.addEventListener('keyup', this.imgClose, false)
   },
   methods: {
-    imgClose(e) {
-      if (e == "close") {
-        this.$emit("closeImg");
-        return;
+    imgClose (e) {
+      if (e === 'close') {
+        this.$emit('closeImg')
+        return
       }
 
       if (e.keyCode === 27) {
-        this.$emit("closeImg");
+        this.$emit('closeImg')
       }
     }
   },
   computed: {
-    imgUrl() {
-      return this.url;
+    imgUrl () {
+      return this.url
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 卸载键盘事件
-    window.removeEventListener("keyup", this.imgClose, false);
+    window.removeEventListener('keyup', this.imgClose, false)
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -58,5 +58,3 @@ export default {
   }
 }
 </style>
-
-

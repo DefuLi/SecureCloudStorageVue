@@ -15,36 +15,36 @@
 
 <script>
 export default {
-  name: "pdf-online-emded",
+  name: 'pdf-online-emded',
   props: {
     pdfurl: String
   },
-  mounted() {
+  mounted () {
     // 绑定键盘事件
-    window.addEventListener("keyup", this.closePdf, false);
+    window.addEventListener('keyup', this.closePdf, false)
   },
   methods: {
     // 当pdf打开时按下esc关闭PDF
-    closePdf(e) {
-      if (e == "close") {
-        this.$emit("closePDF");
-        return;
+    closePdf (e) {
+      if (e === 'close') {
+        this.$emit('closePDF')
+        return
       }
       if (e.keyCode === 27) {
-        this.$emit("closePDF");
+        this.$emit('closePDF')
       }
     }
   },
   computed: {
-    embedPdfUrl() {
-      return this.pdfurl;
+    embedPdfUrl () {
+      return this.pdfurl
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // 卸载键盘事件
-    window.removeEventListener("keyup", this.closePdf, false);
+    window.removeEventListener('keyup', this.closePdf, false)
   }
-};
+}
 </script>
 
 <style lang="scss">

@@ -19,13 +19,13 @@
  * 其他操作均在组件内部完成
  * 盒子样式请在使用时根据情况在父组件中设定，暂不在此设置统一展示方式
  */
-import videoPlayer from "./video-player"; // 导入视频播放组件
-import audioPlayer from "./audio-player"; // 导入音频播放组件
-import pdfOnline from "./pdf-online"; // 导入pdf预览组件
-import imgOnline from "./img-online"; // 导入img预览组件
+import videoPlayer from './video-player' // 导入视频播放组件
+import audioPlayer from './audio-player' // 导入音频播放组件
+import pdfOnline from './pdf-online' // 导入pdf预览组件
+import imgOnline from './img-online' // 导入img预览组件
 
 export default {
-  data(){
+  data () {
     return {
       loading: false, // laod状态
       type: null, // 文件类型
@@ -33,7 +33,7 @@ export default {
       show_preview: false // 是否显示文件预览
     }
   },
-  props:{
+  props: {
     /**
      * 预览文件类型
      * video视频，audio音频，img图片，iframe其他可预览类型【txt,html,pdf】
@@ -45,34 +45,34 @@ export default {
     /**
      * 文件地址或配置项
      */
-    previewOptions: [Object, String],
+    previewOptions: [Object, String]
   },
   methods: {
     // 关闭预览
-    closePreview() {
-      this.$emit("close");
-    },
-  },
-  computed: {
-    selfType(){
-      return this.previewType;
-    },
-    selfOptions(){
-      return this.previewOptions;
+    closePreview () {
+      this.$emit('close')
     }
   },
-  components: {videoPlayer, audioPlayer, pdfOnline, imgOnline}
+  computed: {
+    selfType () {
+      return this.previewType
+    },
+    selfOptions () {
+      return this.previewOptions
+    }
+  },
+  components: { videoPlayer, audioPlayer, pdfOnline, imgOnline }
 }
 </script>
 
 <style lang="scss">
   .file-view{
     z-index: 111;
-    
+
     >.player-item{
       position: static;
       width: 100%;
       height: 100%;
     }
-  } 
+  }
 </style>
