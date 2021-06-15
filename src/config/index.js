@@ -21,6 +21,10 @@ export default {
     pro: 'http://localhost:8080'
   },
   /**
+   * @description 前端项目端口
+   */
+  port: 8081,
+  /**
    * @description 默认打开的首页的路由name值，默认为home
    */
   homeName: 'home',
