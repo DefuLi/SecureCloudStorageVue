@@ -1,10 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-// import App from './App'
+import App from './App'
 import router from './router'
 import store from './store'
-// import iView from 'iview'
+import iView from 'iview'
 // import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
@@ -25,7 +25,7 @@ import 'wl-vue-select/lib/wl-vue-select.css'
 import wlExplorer from 'wl-explorer'
 import 'wl-explorer/lib/wl-explorer.css'
 
-import App from '@/view/file-manager/file-manager'
+// import App from '@/view/file-manager/file-manager'
 Vue.use(wl)
 Vue.use(wlExplorer)
 
@@ -38,7 +38,7 @@ Vue.use(wlExplorer)
 // })
 
 
-
+Vue.use(iView)
 Vue.use(TreeTable)
 Vue.use(VOrgTree)
 /**
@@ -66,4 +66,4 @@ new Vue({
   // i18n,
   store,
   render: h => h(App)
-}).$mount('#app')
+})
