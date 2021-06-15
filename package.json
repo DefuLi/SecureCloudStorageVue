@@ -32,6 +32,7 @@
     "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1",
     "wangeditor": "^3.1.1",
+    "wl-explorer": "^0.2.2",
     "xlsx": "^0.13.3"
   },
   "devDependencies": {
@@ -44,9 +45,11 @@
     "chai": "^4.1.2",
     "eslint-plugin-cypress": "^2.0.1",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5",
+    "less-loader": "^7.3.0",
     "lint-staged": "^6.0.0",
     "mockjs": "^1.0.1-beta3",
+    "node-sass": "^4.0.0",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.13"
   },
   "browserslist": [

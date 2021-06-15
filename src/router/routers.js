@@ -19,6 +19,15 @@ import parentView from '@/components/parent-view'
 
 export default [
   {
+    path: '/file_manager',
+    name: 'file_manager',
+    meta: {
+      title: '文件管理器',
+      icon: 'ios-book'
+    },
+    component: () => import('@/view/file-manager/file-manager')
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {
