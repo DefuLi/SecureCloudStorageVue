@@ -79,6 +79,25 @@ export default [
     ]
   },
   {
+    path: '/cert',
+    name: 'cert',
+    component: Main,
+    meta: {
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'cert_page',
+        name: '证书授权',
+        meta: {
+          icon: '_qq',
+          title: '证书授权'
+        },
+        component: () => import('@/view/cert-page.vue')
+      }
+    ]
+  },
+  {
     path: '/message',
     name: 'message',
     component: Main,
