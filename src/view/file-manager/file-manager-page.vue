@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <wlExplorer
       ref="wl-explorer-cpt"
       :header-dropdown="headerHandle"

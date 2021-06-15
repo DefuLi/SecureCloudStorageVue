@@ -28,7 +28,7 @@ export default {
 /* 弹出区 */
 
 .fade-in-box {
-  position: absolute;
+  position: fixed;
   top: 2px;
   right: 2px;
   bottom: 2px;
