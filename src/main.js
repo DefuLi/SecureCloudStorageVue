@@ -15,7 +15,6 @@ import '@/assets/icons/iconfont.css'
 import TreeTable from 'tree-table-vue'
 import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
-
 import './plugin/element.js'
 
 // 引入树形下拉框
@@ -28,6 +27,7 @@ import 'wl-explorer/lib/wl-explorer.css'
 // import App from '@/view/file-manager/file-manager'
 Vue.use(wl)
 Vue.use(wlExplorer)
+
 
 // 实际打包时应该不引入mock
 /* eslint-disable */

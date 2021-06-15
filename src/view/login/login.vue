@@ -45,9 +45,11 @@ export default {
         .then(res => {
           console.log('-----------获取登录信息---------------')
           console.log(res)
+          // localStorage.setItem('userName',this.params.userName)
           this.getUserInfo().then(res => {
             this.$router.push({
               name: this.$config.homeName
+
             })
           })
           // this.$router.push({
