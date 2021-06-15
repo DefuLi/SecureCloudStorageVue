@@ -4,7 +4,7 @@ import Vue from 'vue'
 // import App from './App'
 import router from './router'
 import store from './store'
-import iView from 'iview'
+// import iView from 'iview'
 // import i18n from '@/locale'
 import config from '@/config'
 import importDirective from '@/directive'
@@ -17,6 +17,7 @@ import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
 
 import './plugin/element.js'
+
 // 引入树形下拉框
 import wl from 'wl-vue-select'
 import 'wl-vue-select/lib/wl-vue-select.css'
