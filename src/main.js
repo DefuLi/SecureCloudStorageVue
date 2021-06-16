@@ -28,7 +28,6 @@ import 'wl-explorer/lib/wl-explorer.css'
 Vue.use(wl)
 Vue.use(wlExplorer)
 
-
 // 实际打包时应该不引入mock
 /* eslint-disable */
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
