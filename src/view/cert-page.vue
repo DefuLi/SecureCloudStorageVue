@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { getCertList, creatCert } from '@/api/cert'
+import { getCertList, newCreatCert } from '@/api/cert'
 // import { getUserInfo } from '../api/user'
 export default {
   data () {
@@ -70,13 +70,21 @@ export default {
     addCert (input, radio) {
       if (radio === 1) this.accesstype = '读'
       else this.accesstype = '读写'
+      let formData = new FormData()
+      formData.append('accesstype', this.accesstype)
+      formData.append('myname', this.input)
+      formData.append('authoruser', this.authoruser)
       console.log(this.accesstype)
       console.log(this.input)
       console.log(this.authoruser)
-      creatCert(this.input, this.authoruser, this.accesstype)
+      newCreatCert(formData)
         .then(res => {
           console.log('1')
         })
+      // creatCert(this.authoruser, this.input, this.accesstype)
+      //   .then(res => {
+      //     console.log('1')
+      //   })
     }
   }
 
