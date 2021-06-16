@@ -128,16 +128,16 @@
         </el-input>
       </el-form-item>
       <el-form-item class="file-handle-box">
-        <i
-          class="iconfont icon-wl-left file-path-handle"
-          :class="{ 'u-disabled': pathIsStart }"
-          @click="pathBtn('prv')"
-        ></i>
-        <i
-          class="iconfont icon-wl-right file-path-handle"
-          :class="{ 'u-disabled': pathIsEnd }"
-          @click="pathBtn('next')"
-        ></i>
+<!--        <i-->
+<!--          class="iconfont icon-wl-left file-path-handle"-->
+<!--          :class="{ 'u-disabled': pathIsStart }"-->
+<!--          @click="pathBtn('prv')"-->
+<!--        ></i>-->
+<!--        <i-->
+<!--          class="iconfont icon-wl-right file-path-handle"-->
+<!--          :class="{ 'u-disabled': pathIsEnd }"-->
+<!--          @click="pathBtn('next')"-->
+<!--        ></i>-->
         <i
           class="iconfont icon-wl-up file-path-handle"
           :class="{ 'u-disabled': path.level === 1 }"

@@ -229,7 +229,22 @@ export default {
     fileSearch (file, update) {
       if (update) {
         this.path = file
-        this.getFileList()
+        // this.getFileList()
+        // 实现从all_folder_list中找到下一层文件夹及文件
+        this.getLowerFile()
+      }
+    },
+    // 获取下一层文件夹及文件
+    getLowerFile () {
+      // console.log(this.all_folder_list)
+      // console.log(this.path)
+      // console.log(this.path.id)
+      for (let i = 0; i < this.all_folder_list.length; i++) {
+        if (this.all_folder_list[i].Id === this.path.id) {
+          // console.log(this.all_folder_list[i].Id)
+          // console.log(this.path.id)
+          this.file_table_data = this.all_folder_list[i].Children
+        }
       }
     },
     // 获取文件夹列表
@@ -258,7 +273,7 @@ export default {
       this.child_act_saved = act
       this.folder_form = { ...act }
     },
-    // 提交文件夹表单
+    // 新增文件夹
     submitFolderFrom (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -370,6 +385,7 @@ export default {
       return row.Type === this.type.folder
     }
   },
+  // 页面初始化时会执行created()
   created () {
     this.closeOtherLayout = closeOtherLayout
     this.getAllFolders()
