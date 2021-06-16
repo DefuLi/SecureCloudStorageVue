@@ -24,6 +24,8 @@ export default {
   level_2_2: 'Level-2-2',
   level_2_2_1: 'Level-2-2-1',
   level_2_2_2: 'Level-2-2-2',
+  'excel-ende': 'Excel加解密模块',
+  'excel-ope': 'Excel密文运算模块',
   excel: 'Excel',
   'upload-excel': '上传excel',
   'export-excel': '导出excel',

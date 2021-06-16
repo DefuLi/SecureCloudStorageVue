@@ -256,6 +256,44 @@ export default [
     ]
   },
   {
+    path: '/excel-encdec',
+    name: 'excel加密',
+    meta: {
+      hideInBread: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'excel-ende',
+        name: 'Excel加解密',
+        meta: {
+          icon: 'md-list',
+          title: 'Excel加解密'
+        },
+        component: () => import('@/view/excel-encdec/upload-excel.vue')
+      }
+    ]
+  },
+  {
+    path: '/excel-operation',
+    name: 'excel密文运算',
+    meta: {
+      hideInBread: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'excel-ope',
+        name: 'excel-ope',
+        meta: {
+          icon: 'md-list',
+          title: 'EXCEL密文运算'
+        },
+        component: () => import('@/view/excel-operation/excel-operation.vue')
+      }
+    ]
+  },
+  {
     path: '/update',
     name: 'update',
     meta: {
