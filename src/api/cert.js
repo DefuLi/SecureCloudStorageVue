@@ -13,9 +13,9 @@ export const creatCert = ({ username, myname, accesstype }) => {
   })
 }
 
-export const getCertList = (authoruser) => {
+export const getCertList = (authorname) => {
   const data = {
-    authoruser
+    authorname
   }
   return axios.request({
     url: 'cert/getlist',

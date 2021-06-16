@@ -48,18 +48,20 @@ export default {
       authoruser: 'admin',
       input: '',
       radio: '1',
-      accesstype: ''
+      accesstype: '',
+      usename: '',
+      myname: ''
+
     }
   },
   created () {
     //  this.authoruser = localStorage.getItem('userName');
-    //  this.authoruser = this.$store.state.data.userName
     this.getcertList(this.authoruser)
   },
 
   methods: {
     getcertList (authoruser) {
-      getCertList(authoruser)
+      getCertList(this.authoruser)
         .then(res => {
           console.log(res)
         })
@@ -67,17 +69,30 @@ export default {
     deleteRow (index, rows) {
       rows.splice(index, 1)
     },
+    getUserName () {
+      getToken()
+        .then(res => {
+          getUserInfo(res).then(
+            res => {
+              this.authoruser = res.userName
+            })
+        })
+    },
     addCert (input, radio) {
+      getUserName()
       if (radio === 1) this.accesstype = '读'
       else this.accesstype = '读写'
       console.log(this.accesstype)
       console.log(this.input)
       console.log(this.authoruser)
+      this.username = this.authoruser
+      this.myname = this.input
       creatCert(this.input, this.authoruser, this.accesstype)
         .then(res => {
           console.log('1')
         })
     }
+
   }
 
 }
