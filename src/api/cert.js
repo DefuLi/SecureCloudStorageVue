@@ -34,3 +34,14 @@ export const getCertList = (authoruser) => {
     method: 'get'
   })
 }
+
+export const deleteCert = formData => {
+  return axios.request({
+    url: 'cert/delete',
+    data: formData,
+    method: 'post',
+    headers: {
+      'Content-Type': 'false'
+    }
+  })
+}
