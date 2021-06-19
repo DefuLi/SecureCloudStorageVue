@@ -97,7 +97,7 @@ export default {
       file_table_columns: [
         {
           label: '名称',
-          prop: 'Name',
+          prop: 'name',
           minWidth: 120
         },
         {
@@ -105,7 +105,7 @@ export default {
           align: 'center',
           width: 120,
           formatter (row) {
-            return row.EditTime.split('T')[0] || '-'
+            return row.editTime.split('T')[0] || '-'
           }
         },
         {
@@ -113,25 +113,26 @@ export default {
           align: 'center',
           width: 90,
           formatter (row) {
-            return row.Type === 1 ? '文件夹' : row.SuffixName
+            return row.type === 1 ? '文件夹' : row.suffixName
           }
         },
         {
           label: '大小',
           minWidth: 90,
           align: 'center',
+          // prop : 'size',
           formatter (row) {
-            if (row.Size === null) return '-'
-            if (row.Size < 1024) {
+            if (row.size === null) return '-'
+            if (row.size < 1024) {
               // 1024以下显示kb
-              return row.Size + 'KB'
+              return row.size + 'KB'
             }
-            if (row.Size < _GB) {
+            if (row.size < _GB) {
               // 1024*1024
-              let _mb = (row.Size / 1024).toFixed(2)
+              let _mb = (row.size / 1024).toFixed(2)
               return parseFloat(_mb) + 'MB'
             }
-            let _gb = (row.Size / _GB).toFixed(2)
+            let _gb = (row.size / _GB).toFixed(2)
             return parseFloat(_gb) + 'GB'
           }
         },
@@ -140,7 +141,7 @@ export default {
           align: 'center',
           width: 120,
           formatter (row) {
-            return row.CreateTime.split('T')[0] || '-'
+            return row.createTime.split('T')[0] || '-'
           }
         },
         {
@@ -148,14 +149,14 @@ export default {
           minWidth: 100,
           align: 'center',
           formatter (row) {
-            return row.CreateUserName || '-'
+            return row.createUserName || '-'
           }
         },
         {
           label: '描述',
           minWidth: 100,
           formatter (row) {
-            return row.Describe || '-'
+            return row.describe || '-'
           }
         }
       ], // 自定义表格列
@@ -382,7 +383,7 @@ export default {
     },
     // 判断是否文件夹函数
     isFolderFn (row) {
-      return row.Type === this.type.folder
+      return row.type === this.type.folder
     }
   },
   // 页面初始化时会执行created()
