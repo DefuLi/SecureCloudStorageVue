@@ -14,7 +14,7 @@ export const getFileListApi = (userName) => {
     userName
   }
   return axios.request({
-    url: 'fileManager/getAllFileList',
+    url: 'fileManager/getFileList',
     params: data,
     method: 'post'
   })
@@ -25,7 +25,7 @@ export const getAllFoldersApi = (userName) => {
     userName
   }
   return axios.request({
-    url: 'fileManager/saveLocalFile',
+    url: 'fileManager/getAllFoldersApi',
     params: data,
     method: 'post'
   })

@@ -84,7 +84,7 @@ export default {
     WlExplorer
   },
   data () {
-    const _GB = 1024 * 1024
+    const _GB = 1024 * 1024 * 1024
     // const vm = this
     return {
       load: {
@@ -97,7 +97,7 @@ export default {
       file_table_columns: [
         {
           label: '名称',
-          prop: 'name',
+          prop: 'Name',
           minWidth: 120
         },
         {
@@ -105,7 +105,7 @@ export default {
           align: 'center',
           width: 120,
           formatter (row) {
-            return row.editTime.split('T')[0] || '-'
+            return row.EditTime.split('T')[0] || '-'
           }
         },
         {
@@ -113,26 +113,29 @@ export default {
           align: 'center',
           width: 90,
           formatter (row) {
-            return row.type === 1 ? '文件夹' : row.suffixName
+            return row.Type === 1 ? '文件夹' : row.SuffixName
           }
         },
         {
           label: '大小',
           minWidth: 90,
           align: 'center',
-          // prop : 'size',
           formatter (row) {
-            if (row.size === null) return '-'
-            if (row.size < 1024) {
+            if (row.Size === null) return '-'
+            if (row.Size < 1024) {
               // 1024以下显示kb
-              return row.size + 'KB'
+              return row.Size + 'KB'
             }
-            if (row.size < _GB) {
+            if (row.Size < 1024 * 1024) {
+              let _kb = (row.Size / 1024).toFixed(2)
+              return parseFloat(_kb) + 'KB'
+            }
+            if (row.Size < _GB) {
               // 1024*1024
-              let _mb = (row.size / 1024).toFixed(2)
+              let _mb = (row.Size / 1024 / 1024).toFixed(2)
               return parseFloat(_mb) + 'MB'
             }
-            let _gb = (row.size / _GB).toFixed(2)
+            let _gb = (row.Size / _GB).toFixed(2)
             return parseFloat(_gb) + 'GB'
           }
         },
@@ -141,7 +144,7 @@ export default {
           align: 'center',
           width: 120,
           formatter (row) {
-            return row.createTime.split('T')[0] || '-'
+            return row.CreateTime.split('T')[0] || '-'
           }
         },
         {
@@ -149,14 +152,14 @@ export default {
           minWidth: 100,
           align: 'center',
           formatter (row) {
-            return row.createUserName || '-'
+            return row.CreateUserName || '-'
           }
         },
         {
           label: '描述',
           minWidth: 100,
           formatter (row) {
-            return row.describe || '-'
+            return row.Describe || '-'
           }
         }
       ], // 自定义表格列
@@ -228,8 +231,10 @@ export default {
      * update: Boolean 数据是否需要更新（不需要表示已存在）
      */
     fileSearch (file, update) {
+      console.log(update)
       if (update) {
         this.path = file
+        console.log(file)
         // this.getFileList()
         // 实现从all_folder_list中找到下一层文件夹及文件
         this.getLowerFile()
@@ -241,7 +246,9 @@ export default {
       // console.log(this.path)
       // console.log(this.path.id)
       for (let i = 0; i < this.all_folder_list.length; i++) {
+        console.log('0')
         if (this.all_folder_list[i].Id === this.path.id) {
+          console.log('1')
           // console.log(this.all_folder_list[i].Id)
           // console.log(this.path.id)
           this.file_table_data = this.all_folder_list[i].Children
@@ -383,7 +390,7 @@ export default {
     },
     // 判断是否文件夹函数
     isFolderFn (row) {
-      return row.type === this.type.folder
+      return row.Type === this.type.folder
     }
   },
   // 页面初始化时会执行created()
