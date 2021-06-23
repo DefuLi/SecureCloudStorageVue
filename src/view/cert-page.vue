@@ -33,8 +33,8 @@
       </el-table-column>
     </el-table>
     <el-input v-model="input" placeholder="被授权者用户名"></el-input>
-    <el-radio v-model="radio" label="1">只读权限</el-radio>
-    <el-radio v-model="radio" label="2">读写权限</el-radio>
+    <el-radio v-model="radio" label='1'>只读权限</el-radio>
+    <el-radio v-model="radio" label='2'>读写权限</el-radio>
     <el-row>
       <el-button type="primary" @click="addCert" plain>生成证书</el-button>
       <el-button type="success" plain>成功按钮</el-button>
@@ -59,6 +59,13 @@ export default {
   created () {
     //  this.authoruser = localStorage.getItem('userName');
     //  this.authoruser = this.$store.state.data.userName
+    console.log(this.$route.params.input === undefined)
+    // console.log(this.$route.params.radio.toString())
+    if (this.$route.params.input !== undefined) {
+      this.input = this.$route.params.input
+      this.radio = this.$route.params.radio.toString()
+    }
+    // console.log(this.radio)
     this.getcertList(this.authoruser)
   },
   methods: {
@@ -81,7 +88,7 @@ export default {
     },
     addCert (input, radio) {
       console.log(this.radio)
-      if (this.radio === 1) { this.accesstype = '读' } else { this.accesstype = '读写' }
+      if (this.radio === '1') { this.accesstype = '读' } else { this.accesstype = '读写' }
       let formData = new FormData()
       formData.append('accesstype', this.accesstype)
       formData.append('authoruser', this.input)

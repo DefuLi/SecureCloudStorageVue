@@ -29,17 +29,23 @@ export const logout = (token) => {
   })
 }
 
-export const getUnreadCount = () => {
+export const getUnreadCount = authorUser => {
   return axios.request({
     url: 'message/count',
-    method: 'get'
+    method: 'get',
+    params: {
+      authorUser
+    }
   })
 }
 
-export const getMessage = () => {
+export const getMessage = authorUser => {
   return axios.request({
     url: 'message/init',
-    method: 'get'
+    method: 'get',
+    params: {
+      authorUser
+    }
   })
 }
 
@@ -55,9 +61,9 @@ export const getContentByMsgId = msg_id => {
 
 export const hasRead = msg_id => {
   return axios.request({
-    url: 'message/has_read',
+    url: 'message/hasRead',
     method: 'post',
-    data: {
+    params: {
       msg_id
     }
   })
@@ -65,9 +71,9 @@ export const hasRead = msg_id => {
 
 export const removeReaded = msg_id => {
   return axios.request({
-    url: 'message/remove_readed',
+    url: 'message/removeReaded',
     method: 'post',
-    data: {
+    params: {
       msg_id
     }
   })
@@ -77,7 +83,7 @@ export const restoreTrash = msg_id => {
   return axios.request({
     url: 'message/restore',
     method: 'post',
-    data: {
+    params: {
       msg_id
     }
   })
