@@ -74,6 +74,7 @@ export default [
     name: 'cert',
     component: Main,
     meta: {
+      // access: ['admin'],
       hideInBread: true
     },
     children: [
@@ -85,6 +86,25 @@ export default [
           title: '证书授权'
         },
         component: () => import('@/view/cert-page.vue')
+      }
+    ]
+  },
+  {
+    path: '/BF',
+    name: 'BF文件加解密',
+    meta: {
+      hideInBread: true
+    },
+    component: Main,
+    children: [
+      {
+        path: 'BFende-page',
+        name: 'BF文件加解密',
+        meta: {
+          icon: 'md-list',
+          title: 'BF文件加解密'
+        },
+        component: () => import('@/view/bf/BF-page.vue')
       }
     ]
   },
