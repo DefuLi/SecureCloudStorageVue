@@ -22,6 +22,9 @@
         :on-success="handleSuccess"
         >
         <i class="el-icon-upload"></i>
+        <!-- <Upload action="" :before-upload="handleBeforeUpload">
+          <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
+        </Upload> -->
         <div class="el-upload__text">
           将文件拖到此处，或
           <em>点击上传</em>
@@ -106,10 +109,15 @@ export default {
     },
     // 上传成功回调
     handleSuccess (res, file, fileList) {
+      console.log('res' + res)
+      console.log('file' + file)
+      console.log('fileList' + fileList)
       this.$emit('uploadSuccess', res, file, fileList)
     },
     // 上传失败回调
     handleError (err) {
+      console.log('err')
+      console.log(err)
       this.$emit('uploadError', err)
     },
     // 文件超出限制

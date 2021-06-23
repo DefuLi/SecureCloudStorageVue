@@ -120,24 +120,43 @@
           placeholder="请输入关键字搜索"
           @keyup.enter.native="fileSearch()"
         >
-          <el-button
+          <!-- <el-button
             slot="append"
             icon="el-icon-search file-search"
             @click="fileSearch()"
-          ></el-button>
+          ></el-button> -->
         </el-input>
       </el-form-item>
+      <el-form-item>
+        <el-dropdown
+          trigger="click"
+          placement="bottom"
+          @command="handleDropdownSearch"
+        >
+          <el-button type="primary" plain>
+            检索
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="plaintextLocalSearch">明文检索</el-dropdown-item>
+            <el-dropdown-item command="plaintextGlobalSearch">明文全局检索</el-dropdown-item>
+            <el-dropdown-item command="BFLocalSearch">BF检索</el-dropdown-item>
+            <el-dropdown-item command="BFGlobalSearch">BF全局检索</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-form-item>
+
       <el-form-item class="file-handle-box">
-<!--        <i-->
-<!--          class="iconfont icon-wl-left file-path-handle"-->
-<!--          :class="{ 'u-disabled': pathIsStart }"-->
-<!--          @click="pathBtn('prv')"-->
-<!--        ></i>-->
-<!--        <i-->
-<!--          class="iconfont icon-wl-right file-path-handle"-->
-<!--          :class="{ 'u-disabled': pathIsEnd }"-->
-<!--          @click="pathBtn('next')"-->
-<!--        ></i>-->
+       <!-- <i
+         class="iconfont icon-wl-left file-path-handle"
+         :class="{ 'u-disabled': pathIsStart }"
+         @click="pathBtn('prv')"
+       ></i> -->
+       <!-- <i
+         class="iconfont icon-wl-right file-path-handle"
+         :class="{ 'u-disabled': pathIsEnd }"
+         @click="pathBtn('next')"
+       ></i> -->
         <i
           class="iconfont icon-wl-up file-path-handle"
           :class="{ 'u-disabled': path.level === 1 }"
@@ -367,6 +386,7 @@ export default {
   components: { submitBtn, fileView, fadeIn, uploadItem },
   data () {
     return {
+
       load: {
         del: false, // 删除
         move: false, // 移动
@@ -562,6 +582,26 @@ export default {
         this.wlDownload()
       }
     },
+    // 检索
+    handleDropdownSearch (val) {
+      console.log('val')
+      console.log(val)
+      if (val === 'plaintextLocalSearch') {
+        console.log('file')
+        console.log(this.file)
+        this.$emit('searchFiles', this.file, 1)
+        return
+      }
+      if (val === 'plaintextGlobalSearch') {
+        this.$emit('searchFiles', this.file, 2)
+      } else if (val === 'BFLocalSearch') {
+        console.log('file')
+        console.log(this.file)
+        this.$emit('searchFiles', this.file, 3)
+      } else if (val === 'BFGlobalSearch') {
+        this.$emit('searchFiles', this.file, 4)
+      }
+    },
     // 显示文件路径输入框
     handleFilePath () {
       this.layout.edit_path = true
@@ -597,7 +637,6 @@ export default {
           path: item[this.selfProps.pathName]
         })
       }
-
       this.$emit('search', this.file, !_act_item)
       this.layout.edit_path = false
     },
@@ -713,7 +752,6 @@ export default {
           pid: _parent[this.selfProps.pathPid],
           path: _parent[this.selfProps.pathName]
         })
-
         this.$emit('search', this.file, true)
       }
     },
