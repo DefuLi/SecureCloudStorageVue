@@ -221,7 +221,10 @@ export default {
      * @name 上传文件提交操作
      */
     fileUpload (file, cb) {
-      this.uploadOptions.bb = 1
+      // console.log('fileUpload')
+      // console.log(file)
+      this.uploadOptions.parentPathId = file.parentPathId
+      this.uploadOptions.pathId = file.pathId
       cb()
     },
     download (data, func) {
