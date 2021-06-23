@@ -10,7 +10,7 @@
         drag
         multiple
         with-credentials
-        :action="url"
+        action="http://localhost:8080/fileManager/upload"
         :limit="limit"
         :data="upOptions"
         :headers="headers"
@@ -21,7 +21,7 @@
         :on-exceed="handleExceed"
         :on-success="handleSuccess"
         >
-        <i class="el-icon-upload"></i>
+        <!-- <i class="el-icon-upload"></i> -->
         <!-- <Upload action="" :before-upload="handleBeforeUpload">
           <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
         </Upload> -->
@@ -97,10 +97,13 @@ export default {
   methods: {
     // 手动上传
     toUpload () {
+      console.log('toUpload')
       this.$refs.upload.submit()
     },
     // 上传前验证
     beforeUpload (file) {
+      console.log('beforeUpload')
+      console.log(this.url)
       this.$emit('beforeUpload', file)
       // 不校验
       if (!this.reg) return true
@@ -109,6 +112,7 @@ export default {
     },
     // 上传成功回调
     handleSuccess (res, file, fileList) {
+      console.log('handleSuccess')
       console.log('res' + res)
       console.log('file' + file)
       console.log('fileList' + fileList)
