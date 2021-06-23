@@ -17,6 +17,7 @@
       @search="fileSearch"
       @del="fileDel"
       @closeFade="closeOtherLayout(fade)"
+      @searchFiles="searchFiles"
     >
       <!-- 操作文件夹滑入区 -->
       <fadeIn v-show="fade.folder">
@@ -73,7 +74,8 @@ import { closeOtherLayout, arrayToTree } from '@/util' // 导入关闭其他弹�
 import {
   getFileListApi, // 1获取文件夹列表
   getAllFoldersApi, // 4获取全部文件夹
-  delFileApi // 6删除文件|文件夹
+  delFileApi, // 6删除文件|文件夹
+  getFilesByNameApi // 根据文件名查询文件
 } from '@/api' // 导入接口
 const apiok = 200
 export default {
@@ -163,7 +165,7 @@ export default {
           }
         }
       ], // 自定义表格列
-      file_table_data: [], // 表格数据
+      file_table_data: [], // 表格数据,赋值给它
       all_folder_list: [], // 所有文件夹列表
       tree_folder_list: [], // 树形文件夹列表
       type: {
@@ -227,11 +229,25 @@ export default {
     },
     /**
      * 根据关键词搜索文件
+     * 1-明文局部搜索；2-明文全局搜索；3-BF局部搜索；4-BF全局搜索
+     */
+    searchFiles (file, type) {
+      console.log('----进入父目录----')
+      console.log(file.key)
+      console.log(type)
+      console.log(this.$store.getters.userName)
+      getFilesByNameApi(file.key, type, this.$store.getters.userName).then(({ data }) => {
+        if (data.StatusCode === apiok) {
+          this.file_table_data = data.Data || []
+        }
+      })
+    },
+    /**
+     * 根据关键词搜索文件
      * file: Object 文件属性
      * update: Boolean 数据是否需要更新（不需要表示已存在）
      */
     fileSearch (file, update) {
-      console.log(update)
       if (update) {
         this.path = file
         console.log(file)
@@ -257,7 +273,7 @@ export default {
     },
     // 获取文件夹列表
     getFileList () {
-      getFileListApi().then(({ data }) => {
+      getFileListApi(this.$store.getters.userName).then(({ data }) => {
         if (data.StatusCode === apiok) {
           this.file_table_data = data.Data || []
         }
@@ -375,7 +391,7 @@ export default {
     },
     // 获取所有文件夹
     getAllFolders () {
-      getAllFoldersApi().then(({ data }) => {
+      getAllFoldersApi(this.$store.getters.userName).then(({ data }) => {
         if (data.StatusCode === apiok) {
           this.all_folder_list = data.Data || []
           let _list = [...this.all_folder_list]
@@ -395,6 +411,8 @@ export default {
   },
   // 页面初始化时会执行created()
   created () {
+    // console.log(1)
+    console.log(this.$store.getters.userName)
     this.closeOtherLayout = closeOtherLayout
     this.getAllFolders()
     this.getFileList()

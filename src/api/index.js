@@ -9,6 +9,8 @@ import axios from '@/libs/api.request'
 //         data
 //     })
 // }
+
+// 获取用户根目录下的文件
 export const getFileListApi = (userName) => {
   const data = {
     userName
@@ -20,12 +22,38 @@ export const getFileListApi = (userName) => {
   })
 }
 
+// 获取用户全部文件
 export const getAllFoldersApi = (userName) => {
   const data = {
     userName
   }
   return axios.request({
     url: 'fileManager/getAllFoldersApi',
+    params: data,
+    method: 'post'
+  })
+}
+
+// 根据文件名获取文件
+export const getFilesByNameApi = (fileName, type, userName) => {
+  const data = {
+    fileName,
+    type,
+    userName
+  }
+  return axios.request({
+    url: 'fileManager/getFilesByNameApi',
+    params: data,
+    method: 'post'
+  })
+}
+
+export const uploadFileApi = (file) => {
+  const data = {
+    file
+  }
+  return axios.request({
+    url: 'fileManager/uploadFileApi',
     params: data,
     method: 'post'
   })
@@ -80,4 +108,5 @@ export {
   delFileApi, // 6删除文件|文件夹
   downloadDataApi, // 8下载数据
   fileMoveApi // 9文件夹移动
+  // getFilesByNameApi
 }
