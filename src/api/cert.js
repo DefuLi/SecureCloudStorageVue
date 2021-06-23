@@ -1,9 +1,9 @@
 import axios from '@/libs/api.request'
 
-export const creatCert = ({ username, myname, accesstype }) => {
+export const creatCert = ({ authorizeduser, authoruser, accesstype }) => {
   const data = {
-    username,
-    myname,
+    authorizeduser,
+    authoruser,
     accesstype
   }
   return axios.request({

@@ -6,46 +6,14 @@
     <Row :gutter="14">
       <i-col>
         <Card>
-            <p slot="title">
-              <Icon type="ios-analytics"></Icon>
-              Excel加解密模块
-            </p>
-            <Row>
+          <p slot="title">
+            <Icon type="ios-analytics"></Icon>
+            BF加解密模块
+          </p>
+          <Row>
             <p>
-              提示：本模块主要针对Excel文件，保序加密算法用来进行关系运算(检索)，算术加密算法用来进行数值数据的加减乘除运算
+              提示：本模块针对各种类型的文件，加密算法使用的是RSA算法
             </p>
-            </Row>
-          </Card>
-      </i-col>
-    </Row>
-    <Row :gutter="14" class="margin-top-10">
-      <i-col span="12" class="padding-left-10">
-        <Card title="加密属性" class="card-left" >
-          <Row>
-            <td style="width:120px;">
-              <span label="加解密属性">加解密属性:</span>
-            </td>
-            <td style="width:10px;"></td>
-            <td style="width:170px;">
-              <Select v-model="searchKey" class="search-col" @on-change="initMethod" placeholder="请选择加解密属性">
-              <Option v-for="item in columns" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
-              </Select>
-            </td>
-          </Row>
-        </Card>
-      </i-col>
-      <i-col span="12" class="padding-left-10">
-        <Card title="加密算法" class="card-right">
-          <Row>
-            <td style="width:120px;">
-              <span label="加解密算法">加解密算法:</span>
-            </td>
-            <td style="width:10px;"></td>
-            <td style="width:170px;">
-              <Select v-model="searchMethod" class="search-col" @on-change="getSelected" placeholder="请选择加解密算法">
-              <Option v-for="item in methodz" v-if="item.key !== 'handle'" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
-              </Select>
-            </td>
           </Row>
         </Card>
       </i-col>
@@ -53,51 +21,41 @@
     <Row :gutter="14" style="margin-top: 14px;">
       <i-col>
         <Card>
-            <!-- <p slot="title">
-              <Icon type="ios-analytics"></Icon>
-              综合实例
-            </p> -->
-            <Row>
+          <!-- <p slot="title">
+            <Icon type="ios-analytics"></Icon>
+            综合实例
+          </p> -->
+          <Row>
             <div class="ivu-upload-list-file" v-if="file !== null">
               <Icon type="ios-stats"></Icon>
-                选择的文件：{{ file.name }}
-                <!-- 选择的文件：{{ filePath }} -->
+              选择的文件：{{ file.name }}
+              <!-- 选择的文件：{{ filePath }} -->
               <Icon v-show="showRemoveFile" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemove()"></Icon>
             </div>
-            </Row>
-            <Row>
-              <transition name="fade">
-                <Progress v-if="showProgress" :percent="progressPercent" :stroke-width="2">
-                  <div v-if="progressPercent == 100">
-                    <Icon type="ios-checkmark-circle"></Icon>
-                    <span>成功</span>
-                  </div>
-                </Progress>
-              </transition>
-            </Row>
-            <Row>
-            <div class="ivu-upload-list-file" v-if="file !== null">
-              <Icon type="logo-buffer"></Icon>
-              <span style="margin-top: 5px;"> 选择的属性和方法：</span>
-              <Input class="search-input" v-model="showValue" style="margin-top: 12px;"/>
-            </div>
-            </Row>
-            <Row class="margin-top-10">
-              <Table :columns="tableTitle" :data="tableData" :loading="tableLoading"></Table>
-            </Row>
-            <Row class="margin-top-10">
+          </Row>
+          <Row>
+            <transition name="fade">
+              <Progress v-if="showProgress" :percent="progressPercent" :stroke-width="2">
+                <div v-if="progressPercent == 100">
+                  <Icon type="ios-checkmark-circle"></Icon>
+                  <span>成功</span>
+                </div>
+              </Progress>
+            </transition>
+          </Row>
+          <Row class="margin-top-10">
             <td style="width:80px;">
-              <Upload action="" :before-upload="handleBeforeUpload" accept=".xls, .xlsx">
-              <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
+              <Upload action="" :before-upload="handleBeforeUpload" >
+                <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">上传文件</Button>
               </Upload>
             </td>
             <td class="td-space"></td>
             <td>
-              <Button icon="ios-cloud-upload-outline" @click="handleBeforePropertyEncrypt()">属性加密</Button>
+              <Button icon="ios-cloud-upload-outline" @click="handleBeforePropertyEncrypt()">BF加密</Button>
             </td>
             <td class="td-space"></td>
             <td>
-              <Button icon="ios-cloud-upload-outline" @click="handleBeforePropertyDecrypt()">属性解密</Button>
+              <Button icon="ios-cloud-upload-outline" @click="handleBeforePropertyDecrypt()">BF解密</Button>
             </td>
             <td class="td-space"></td>
             <td>
@@ -112,14 +70,15 @@
               <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">打开目录</Button>
             </td>
           </Row>
-          </Card>
+        </Card>
       </i-col>
     </Row>
   </div>
 </template>
 <script>
-import excel from '@/libs/excel'
-import { DecryptExcel, EncryptExcel, UploadExcel } from '@/api/encrypt'
+// import excel from '@/libs/excel'
+import { DecryptExcel, UploadExcel } from '@/api/encrypt'
+import { EncryptBF } from '@/api/bf'
 // import { propertyEncrypt, propertyDecrypt } from '@/api/encrypt'
 export default {
   name: 'excel-ende',
@@ -231,41 +190,31 @@ export default {
     //     })
     // },
     handleBeforePropertyEncrypt () {
-      // console.log(file)
-      if (this.file === null) {
+      console.log(this.file)
+      if (this.file !== null) {
+        this.handlePropertyEncrypt()
+      } else if (this.file === null) {
         this.$Notice.warning({
           title: '未选择文件',
-          desc: '请选择xls或xlxs格式的文件进行加密操作。'
+          desc: '请选择文件进行BF加密操作。'
         })
-      } else if (this.searchValue === null) {
-        this.$Notice.warning({
-          title: '参数不全',
-          desc: '请选择加密属性和加密算法。'
-        })
-      } else if (this.searchValue.indexOf(this.searchKey) !== -1) {
-        this.$Notice.warning({
-          title: '属性重复选择',
-          desc: '该属性已经选择了，请选择其他属性。'
-        })
-      } else {
-        this.handlePropertyEncrypt()
       }
       return false
     },
     handlePropertyEncrypt () {
-      console.log(this.searchValue)
+      // console.log(this.searchValue)
       console.log(this.file)
       let formData = new FormData()
       formData.append('file', this.file)
-      formData.append('arrSelect', this.searchValue)
-      formData.append('type', 0)
+      // formData.append('arrSelect', this.searchValue)
+      // formData.append('type', 0)
       // propertyEncrypt(this.searchValue, this.File)
       // // propertyEncrypt(this.searchValue)
       //   .then(res => {
       //     console.log('-----------获取登录信息---------------')
       //     console.log(res)
       //   })
-      EncryptExcel(formData).then(res => {
+      EncryptBF(formData).then(res => {
         console.log(res)
         if (res.data === 1) {
           this.$Message.success('加密成功')
@@ -323,17 +272,11 @@ export default {
     },
     handleBeforeUpload (file) {
       // console.log(file)
-      const fileExt = file.name.split('.').pop().toLocaleLowerCase()
-      if (fileExt === 'xlsx' || fileExt === 'xls') {
-        this.readFile(file)
-        this.file = file
-      } else {
-        this.$Notice.warning({
-          title: '文件类型错误',
-          desc: '文件：' + file.name + '不是EXCEL文件，请选择后缀为.xlsx或者.xls的EXCEL文件。'
-        })
-      }
-      return false
+      // const fileExt = file.name.split('.').pop().toLocaleLowerCase()
+      this.readFile(file)
+      this.file = file
+
+      return true
     },
     // 读取文件
     readFile (file) {
@@ -353,19 +296,9 @@ export default {
       }
       reader.onload = e => {
         this.$Message.info('文件读取成功')
-        const data = e.target.result
-        // console.log(data)
-        const { header, results } = excel.read(data, 'array')
-        const tableTitle = header.map(item => { return { title: item, key: item } })
-        var index = 1
-        header.forEach(item => this.columns.push({ key: index++, title: item }))
-        this.tableData = results.slice(0, 5)
-        this.tableTitle = tableTitle
         this.uploadLoading = false
-        this.tableLoading = false
-        this.showRemoveFile = true
-        console.log(this.tableData)
-        console.log(this.tableTitle)
+        //  const data = e.target.result
+        //  console.log(data)
       }
     }
   },
@@ -378,13 +311,13 @@ export default {
 }
 </script>
 <style>
-/* .card-left {
-  width: 50%;
-}
-.card-right {
-  width: 50%;
-} */
-.td-space {
-  width: 15%;
-}
+  /* .card-left {
+    width: 50%;
+  }
+  .card-right {
+    width: 50%;
+  } */
+  .td-space {
+    width: 10%;
+  }
 </style>
