@@ -36,7 +36,7 @@
     <el-radio v-model="radio" label="1">只读权限</el-radio>
     <el-radio v-model="radio" label="2">读写权限</el-radio>
     <el-row>
-      <el-button type="primary" @click="addCert" plain>生成证书</el-button>
+      <el-button type="primary" @click="beforeaddCert" plain>生成证书</el-button>
       <el-button type="success" plain>成功按钮</el-button>
       <el-button type="info" plain>信息按钮</el-button>
     </el-row>
@@ -59,6 +59,9 @@ export default {
   created () {
     //  this.authoruser = localStorage.getItem('userName');
     //  this.authoruser = this.$store.state.data.userName
+    //  console.log(this.userName)
+    this.authoruser = this.$store.getters.userName
+    console.log(this.authoruser)
     this.getcertList(this.authoruser)
   },
   methods: {
@@ -78,20 +81,37 @@ export default {
       deleteCert(formData)
       rows.splice(index, 1)
       console.log(index)
+      this.$Message.info('证书删除成功')
     },
-    addCert (input, radio) {
+    beforeaddCert () {
+      if (this.input !== this.authoruser) {
+        this.addCert()
+      } else {
+        this.$Notice.warning({
+          title: '被授权者姓名有误',
+          desc: '授权者和被授权者不能为同一个人'
+        })
+      }
+    },
+    addCert () {
       console.log(this.radio)
-      if (this.radio === 1) { this.accesstype = '读' } else { this.accesstype = '读写' }
+      if (this.radio === '1') {
+        this.accesstype = '0'
+      } else {
+        this.accesstype = '1'
+      }
       let formData = new FormData()
       formData.append('accesstype', this.accesstype)
-      formData.append('authoruser', this.input)
-      formData.append('myname', this.authoruser)
+      formData.append('authorizeduser', this.input)
+      formData.append('authoruser', this.authoruser)
       console.log(this.accesstype)
       console.log(this.input)
       console.log(this.authoruser)
       newCreatCert(formData)
         .then(res => {
           console.log('1')
+          window.location.reload()
+          this.$Message.info('证书生成成功')
         })
         // creatCert(this.authoruser, this.input, this.accesstype)
         //   .then(res => {
