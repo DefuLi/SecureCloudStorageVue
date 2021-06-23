@@ -232,18 +232,23 @@ export default {
     // },
     handleBeforePropertyEncrypt () {
       // console.log(file)
-      if (this.searchValue !== null && this.file !== null) {
-        this.handlePropertyEncrypt()
-      } else if (this.file === null) {
+      if (this.file === null) {
         this.$Notice.warning({
           title: '未选择文件',
           desc: '请选择xls或xlxs格式的文件进行加密操作。'
         })
-      } else {
+      } else if (this.searchValue === null) {
         this.$Notice.warning({
           title: '参数不全',
           desc: '请选择加密属性和加密算法。'
         })
+      } else if (this.searchValue.indexOf(this.searchKey) !== -1) {
+        this.$Notice.warning({
+          title: '属性重复选择',
+          desc: '该属性已经选择了，请选择其他属性。'
+        })
+      } else {
+        this.handlePropertyEncrypt()
       }
       return false
     },
@@ -380,6 +385,6 @@ export default {
   width: 50%;
 } */
 .td-space {
-  width: 10%;
+  width: 15%;
 }
 </style>

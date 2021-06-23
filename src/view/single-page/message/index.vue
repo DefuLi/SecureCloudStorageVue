@@ -25,7 +25,7 @@
           <MenuItem v-for="item in messageList" :name="item.msg_id" :key="`msg_${item.msg_id}`">
             <div>
               <p class="msg-title">{{ item.title }}</p>
-              <Badge status="default" :text="item.create_time" />
+              <Badge status="default" :text="item.createTime" />
               <Button
                 style="float: right;margin-right: 20px;"
                 :style="{ display: item.loading ? 'inline-block !important' : '' }"
@@ -44,9 +44,24 @@
         <Spin fix v-if="contentLoading" size="large"></Spin>
         <div class="message-view-header">
           <h2 class="message-view-title">{{ showingMsgItem.title }}</h2>
-          <time class="message-view-time">{{ showingMsgItem.create_time }}</time>
+          <time class="message-view-time">{{ showingMsgItem.createTime }}</time>
         </div>
-        <div v-html="messageContent"></div>
+        <!-- <div v-html="messageContent"></div> -->
+        <div v-show="buttonShow">
+          尊敬的{{ this.token }}，您好：
+        </div>
+        <div v-show="buttonShow">
+         {{ showingMsgItem.authorizedUser }}向您申请文件的证书{{ readWrite }}权限，如果您同意向其授权，请点击下方的去授权按钮，对用户进行授权操作。
+        </div>
+        <div style="margin-top:20px;" v-show="buttonShow">
+        <td v-show="certShow">
+        <Button icon="ios-cloud-upload-outline" @click="goToGenerateCert()">去授权</Button>
+        </td>
+        <td class="td-space" v-show="certShow"></td>
+        <td>
+        <Button icon="ios-cloud-upload-outline" @click="goBack()">返回</Button>
+        </td>
+        </div>
       </div>
     </div>
   </Card>
@@ -54,6 +69,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import { getToken } from '@/libs/util'
 const listDic = {
   unread: 'messageUnreadList',
   readed: 'messageReadedList',
@@ -63,8 +79,12 @@ export default {
   name: 'message_page',
   data () {
     return {
+      readWrite: null,
+      token: getToken(),
       listLoading: true,
       contentLoading: false,
+      certShow: false,
+      buttonShow: false,
       currentMessageType: 'unread',
       messageContent: '',
       showingMsgItem: {}
@@ -104,6 +124,18 @@ export default {
     stopLoading (name) {
       this[name] = false
     },
+    goToGenerateCert () {
+      this.$router.push({
+        name: '证书授权',
+        params: { input: this.showingMsgItem.authorizedUser, radio: this.showingMsgItem.readWrite }
+      })
+    },
+    goBack () {
+      this.messageContent = null
+      this.showingMsgItem = {}
+      this.buttonShow = false
+      this.certShow = false
+    },
     handleSelect (name) {
       this.currentMessageType = name
     },
@@ -111,10 +143,18 @@ export default {
       this.contentLoading = true
       this.getContentByMsgId({ msg_id }).then(content => {
         this.messageContent = content
+        console.log(content)
         const item = this.messageList.find(item => item.msg_id === msg_id)
         if (item) this.showingMsgItem = item
         if (this.currentMessageType === 'unread') this.hasRead({ msg_id })
+        if (this.showingMsgItem.readWrite === 2) {
+          this.readWrite = '读写'
+        } else {
+          this.readWrite = '写'
+        }
         this.stopLoading('contentLoading')
+        this.buttonShow = true
+        if (this.showingMsgItem.title === '证书授权申请') this.certShow = true
       }).catch(() => {
         this.stopLoading('contentLoading')
       })
@@ -129,12 +169,16 @@ export default {
   mounted () {
     this.listLoading = true
     // 请求获取消息列表
+    // console.log(this.token)
     this.getMessageList().then(() => this.stopLoading('listLoading')).catch(() => this.stopLoading('listLoading'))
   }
 }
 </script>
 
 <style lang="less">
+.td-space{
+  width: 20%;
+}
 .message-page{
   &-con{
     height: ~"calc(100vh - 176px)";

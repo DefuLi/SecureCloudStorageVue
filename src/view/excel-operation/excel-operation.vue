@@ -18,10 +18,12 @@
           </Card>
           <Card class="margin-top-10">
             <Row class="margin-top-10">
+            <div class="ivu-upload-list-file" >
               <Icon type="ios-stats"></Icon>
                 <!-- 选择的文件：{{ file.name }} -->
                 选择的文件：{{ filePath }}
               <Icon v-show="showRemoveFile" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemove()"></Icon>
+            </div>
             </Row>
             <Row class="margin-top-10">
               <transition name="fade">
@@ -34,8 +36,10 @@
               </transition>
             </Row>
             <Row class="margin-top-10">
+            <div class="ivu-upload-list-file" >
               <Icon type="logo-buffer"></Icon>
               选择的文件信息: {{ showValue }}
+            </div>
             </Row>
           </Card>
       </i-col>
@@ -89,7 +93,10 @@
             <!-- <Input class="search-input" v-model="opeResult" style="margin-top: 12px;" :span="12"/> -->
           </Row>
           <Row style="margin-top: 12px;">
+            <div class="ivu-upload-list-file" >
             {{ opeEncInfo }}
+          <Icon v-show="showRemoveOpeInfo" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemoveOpeInfo()"></Icon>
+            </div>
           </Row>
         </Card>
       </i-col>
@@ -102,7 +109,7 @@
             <td style="width:10px;"></td>
             <td style="width:170px;">
               <Select v-model="arithProperty" class="search-col" @on-change="initMethod" placeholder="请选择算术加密属性">
-              <Option v-for="item in arithColumns" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
+              <Option v-for="item in arithColumns" :value="item.title" :key="`search-col-${item.key}`">{{ item.title }}</Option>
               </Select>
             </td>
           </Row>
@@ -127,6 +134,10 @@
               <Option v-for="item in recordz" :value="item.key" :key="`search-col-${item.key}`">{{ item.title }}</Option>
               </Select>
             </td>
+            <td v-show="arithRecord === '1'">
+            <Input class="search-input" v-model="arithKey2" style="width:50%;margin-left:10px;"/>
+            <span label="行" style="margin-left:10px;">行</span>
+            </td>
           </Row>
           <Row style="margin-top: 12px;">
             <td style="width:120px;" class="margin-top-10">
@@ -134,12 +145,14 @@
             </td>
             <td style="width:10px;"></td>
             <td>
-              <Input class="search-input" v-model="arithKey" />
+            <Input class="search-input" v-model="arithKey" />
             </td>
-            <td style="width:10px;"></td>
-            <td style="width:120px;" class="margin-top-10">
-              <span label="行">行</span>
+            <!-- <td v-show="arithRecord === '2'">
+            <Input class="search-input" v-model="arithKey" style="width:25%;"/>
             </td>
+            <td style="width:120px;" class="margin-top-10" v-show="arithRecord !== '2'">
+            <span label="行" style="margin-left:10px;">行</span>
+            </td> -->
           </Row>
           <Row style="margin-top: 12px;">
             <td style="width:120px;" class="margin-top-10">
@@ -149,7 +162,10 @@
             <!-- <Input class="search-input" v-model="opeResult" style="margin-top: 12px;" :span="12"/> -->
           </Row>
            <Row style="margin-top: 12px;">
-            {{ arithEncInfo }}
+             <div class="ivu-upload-list-file" >
+              {{ arithEncInfo }}
+              <Icon v-show="showRemoveArithInfo" type="ios-close" class="ivu-upload-list-remove" @click.native="handleRemoveArithInfo()"></Icon>
+            </div>
           </Row>
         </Card>
       </i-col>
@@ -224,10 +240,14 @@ export default {
       opeEncInfo: null,
       opeResult: null,
       showProgress: false,
+      showRemoveOpeInfo: false,
+      showRemoveArithInfo: false,
       showRemoveFile: false,
       showValue: null,
       arithMethod: null,
       arithKey: null,
+      arithKey2: null,
+      rowCount: null,
       opeProperty: null,
       opeKey: null,
       opeLowBound: null,
@@ -281,13 +301,21 @@ export default {
   },
   methods: {
     initUpload () {
+      this.arithEncInfo = null
+      this.arithKey = null
+      this.arithRecord = null
+      this.arithMethod = null
       this.fileParentPath = null
       this.opeResult = null
       this.opeEncInfo = null
       this.opeKey = null
       this.file = null
+      this.arithKey2 = null
+      this.rowCount = null
       this.filePath = null
       this.showProgress = false
+      this.showRemoveOpeInfo = false
+      this.showRemoveArithInfo = false
       this.loadingProgress = 0
       this.tableData = []
       this.tableTitle = []
@@ -315,7 +343,7 @@ export default {
     initMethod () {
       this.searchMethod = this.methodz[0].key
       // console.log('初始化')
-      // console.log(this.searchMethod)
+      console.log(this.arithRecord)
     },
     handleUploadFile () {
       this.initUpload()
@@ -340,12 +368,16 @@ export default {
         // this.tableTitle = res.data.tableHead
         this.showRemoveFile = true
         // this.uploadLoading = false
+        this.rowCount = res.data.rowCount
         this.tableLoading = false
         this.file = res.data.filename
         // this.file.name = res.data.filename
         this.filePath = res.data.filename
         this.fileParentPath = res.data.parentPath
         this.showValue = res.data.tableHead
+        if (this.showValue !== null) {
+          this.showValue = this.showValue + ';' + this.rowCount + '行'
+        }
         console.log(this.file.name)
       })
     },
@@ -355,7 +387,7 @@ export default {
           title: '未选择文件',
           desc: '请选择xls或xlxs格式的文件进行密文运算操作。'
         })
-      } else if (this.opeProperty === null) {
+      } else if (this.opeProperty === null || this.opeProperty === '请选择保序加密属性') {
         this.$Notice.warning({
           title: '保序加密属性',
           desc: '请选择保序加密属性。'
@@ -392,6 +424,7 @@ export default {
           this.opeResult = res.data.result
           this.modalVisible = true
           this.opeEncInfo = res.data.opeEncInfo
+          this.showRemoveOpeInfo = true
           this.$Message.success('加密成功')
         } else {
           this.$Message.error('加密失败')
@@ -406,7 +439,7 @@ export default {
           desc: '请选择xls或xlxs格式的文件进行密文运算操作。'
         })
         this.handlePropertyDecrypt()
-      } else if (this.opeProperty === null) {
+      } else if (this.opeProperty === null || this.opeProperty === '请选择保序加密属性') {
         this.$Notice.warning({
           title: '未选择保序加密属性',
           desc: '请选择保序加密属性。'
@@ -505,7 +538,7 @@ export default {
           title: '未选择文件',
           desc: '请选择xls或xlxs格式的文件进行密文运算操作。'
         })
-      } else if (this.arithProperty === null) {
+      } else if (this.arithProperty === null || this.arithProperty === '请选择算术加密属性') {
         this.$Notice.warning({
           title: '算术加密属性',
           desc: '请选择算术加密属性。'
@@ -520,32 +553,83 @@ export default {
           title: '运算方法为空',
           desc: '请选择运算方法。'
         })
-      } else if (this.arithKey === null) {
-        this.$Notice.warning({
-          title: '算术关键字为空',
-          desc: '请填写算术关键字。'
-        })
-      } else {
-        this.handleArithKeyEncrypt()
+      } else if (this.arithRecord !== null) {
+        if (this.arithRecord === '0') {
+          if (this.arithKey === null) {
+            this.$Notice.warning({
+              title: '算术关键字为空',
+              desc: '请填写算术关键字。'
+            })
+          } else {
+            this.handleArithKeyEncrypt()
+          }
+        } else if (this.arithRecord === '1') {
+          console.log(parseInt(null))
+          console.log(parseInt(this.arithKey2))
+          console.log(parseInt(this.rowCount))
+          if (this.arithKey === null || this.arithKey2 === null) {
+            this.$Notice.warning({
+              title: '算术关键字不全',
+              desc: '请填写算术关键字。'
+            })
+          } else if (parseInt(this.arithKey2) > parseInt(this.rowCount)) {
+            this.$Notice.warning({
+              title: '超过文件的最大行数' + this.rowCount,
+              desc: '请重新填写行数。'
+            })
+          } else {
+            this.handleArithKeyEncrypt()
+          }
+        } else if (this.arithRecord === '2') {
+          if (this.opeEncInfo === null) {
+            this.$Notice.warning({
+              title: '保序信息不全',
+              desc: '请先进行保序关键字或范围的运算'
+            })
+          } else if (this.arithKey === null) {
+            this.$Notice.warning({
+              title: '算术关键字不全',
+              desc: '请填写算术关键字。'
+            })
+          } else {
+            this.handleArithKeyEncrypt()
+          }
+        } else {
+          this.$Notice.warning({
+            title: '记录选择为空',
+            desc: '请选择对应记录。'
+          })
+        }
       }
     },
     handleArithKeyEncrypt () { // 算术关键字加密
       console.log(this.searchValue)
       let formData = new FormData()
       formData.append('filePath', this.filePath)
-      formData.append('arrSelect', this.searchValue)
+      formData.append('fileParentPath', this.fileParentPath)
+      formData.append('arithRecord', this.arithRecord)
+      formData.append('arithProperty', this.arithProperty)
+      formData.append('arithEncInfo', this.arithEncInfo)
+      formData.append('arithMethod', this.arithMethod)
+      formData.append('arithKey', this.arithKey)
+      formData.append('arithKey2', this.arithKey2)
+      formData.append('opeEncInfo', this.opeEncInfo)
       formData.append('type', 0)
       ArithKeyEncrypt(formData).then(res => {
         console.log(res)
-        if (res.data === 1) {
+        if (res.data.code === 1) {
+          this.opeResult = res.data.result
+          this.modalVisible = true
+          this.showRemoveArithInfo = true
+          this.arithEncInfo = res.data.arithEncInfo
           this.$Message.success('加密成功')
-          this.initUpload()
+          // this.initUpload()
         } else if (res.data === 0) {
           this.$Message.success('部分加密成功')
-          this.initUpload()
+          // this.initUpload()
         } else {
           this.$Message.error('加密失败')
-          this.initUpload()
+          // this.initUpload()
         }
       })
     },
@@ -555,20 +639,15 @@ export default {
           title: '未选择文件',
           desc: '请选择xls或xlxs格式的文件进行密文运算操作。'
         })
-      } else if (this.arithProperty === null) {
+      } else if (this.arithProperty === null || this.arithProperty === '请选择算术加密属性') {
         this.$Notice.warning({
           title: '算术加密属性',
           desc: '请选择算术加密属性。'
         })
-      } else if (this.arithEncInfo !== null && this.arithEncInfo.indexOf(this.arithProperty) !== -1) {
+      } else if (this.arithEncInfo === null) {
         this.$Notice.warning({
-          title: '属性重复选择',
-          desc: '该属性已经选择了，请选择其他属性。'
-        })
-      } else if (this.arithMethod === null) {
-        this.$Notice.warning({
-          title: '运算方法为空',
-          desc: '请选择运算方法。'
+          title: '算术关键字未加密',
+          desc: '请先进行算术关键字的加密'
         })
       } else if (this.arithKey === null) {
         this.$Notice.warning({
@@ -582,26 +661,39 @@ export default {
     handleArithEncrypt () { // 算术运算
       console.log(this.searchValue)
       let formData = new FormData()
+      formData.append('fileParentPath', this.fileParentPath)
       formData.append('filePath', this.filePath)
-      formData.append('arrSelect', this.searchValue)
+      formData.append('arithMethod', this.arithMethod)
+      formData.append('arithEncInfo', this.arithEncInfo)
       formData.append('type', 0)
       ArithEncrypt(formData).then(res => {
         console.log(res)
-        if (res.data === 1) {
+        if (res.data.code === 1) {
+          this.opeResult = res.data.result
+          this.modalVisible = true
+          this.arithEncInfo = res.data.arithEncInfo
           this.$Message.success('加密成功')
-          this.initUpload()
+          // this.initUpload()
         } else if (res.data === 0) {
           this.$Message.success('部分加密成功')
-          this.initUpload()
+          // this.initUpload()
         } else {
           this.$Message.error('加密失败')
-          this.initUpload()
+          // this.initUpload()
         }
       })
     },
     handleRemove () {
       this.initUpload()
       this.$Message.info('上传的文件已删除！')
+    },
+    handleRemoveOpeInfo () {
+      this.opeEncInfo = null
+      this.$Message.info('保序信息已清空！')
+    },
+    handleRemoveArithInfo () {
+      this.arithEncInfo = null
+      this.$Message.info('算术信息已清空！')
     },
     handleBeforeUpload (file) {
       // console.log(file)
