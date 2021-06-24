@@ -12,6 +12,18 @@ export const login = ({ userName, password }) => {
   })
 }
 
+export const register = ({ userName, password }) => {
+  const data = {
+    userName,
+    password
+  }
+  return axios.request({
+    url: 'register/user',
+    params: data,
+    method: 'post'
+  })
+}
+
 export const getUserInfo = (token) => {
   return axios.request({
     url: 'get_info',

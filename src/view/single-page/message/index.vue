@@ -154,7 +154,9 @@ export default {
         }
         this.stopLoading('contentLoading')
         this.buttonShow = true
+        this.certShow = false
         if (this.showingMsgItem.title === '证书授权申请') this.certShow = true
+        if (this.showingMsgItem.title.indexOf('cert apply for') !== -1) this.certShow = true
       }).catch(() => {
         this.stopLoading('contentLoading')
       })

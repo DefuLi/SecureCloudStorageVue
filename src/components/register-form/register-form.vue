@@ -1,5 +1,5 @@
 <template>
-  <Form ref="loginForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
+  <Form ref="registerForm" :model="form" :rules="rules" @keydown.enter.native="handleSubmit">
     <FormItem prop="userName">
       <Input v-model="form.userName" placeholder="请输入用户名">
         <span slot="prepend">
@@ -16,18 +16,18 @@
     </FormItem>
     <FormItem>
       <td style="width:120px;">
-      <Button @click="handleSubmit" type="primary" long>登录</Button>
+      <Button @click="handleSubmit" type="primary" long>用户注册</Button>
       </td>
       <td style="width:10%"></td>
       <td style="width:120px;">
-      <Button @click="handleRegister" type="primary" long>用户注册</Button>
+      <Button @click="handleReturn" type="primary" long>返回</Button>
       </td>
     </FormItem>
   </Form>
 </template>
 <script>
 export default {
-  name: 'LoginForm',
+  name: 'RegisterForm',
   props: {
     userNameRules: {
       type: Array,
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     handleSubmit () {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.registerForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
             userName: this.form.userName,
@@ -73,9 +73,9 @@ export default {
         }
       })
     },
-    handleRegister () {
+    handleReturn () {
       this.$router.push({
-        name: 'register'
+        name: 'login'
       })
     }
   }
