@@ -77,8 +77,8 @@
 </template>
 <script>
 // import excel from '@/libs/excel'
-import { DecryptExcel, UploadExcel } from '@/api/encrypt'
-import { EncryptBF } from '@/api/bf'
+import { UploadExcel } from '@/api/encrypt'
+import { EncryptBF, DecryptBF } from '@/api/bf'
 // import { propertyEncrypt, propertyDecrypt } from '@/api/encrypt'
 export default {
   name: 'excel-ende',
@@ -206,6 +206,7 @@ export default {
       console.log(this.file)
       let formData = new FormData()
       formData.append('file', this.file)
+      formData.append('username', this.$store.getters.userName)
       // formData.append('arrSelect', this.searchValue)
       // formData.append('type', 0)
       // propertyEncrypt(this.searchValue, this.File)
@@ -230,17 +231,12 @@ export default {
     },
     handleBeforePropertyDecrypt () {
       // console.log(file)
-      if (this.searchValue !== null && this.file !== null) {
+      if (this.file !== null) {
         this.handlePropertyDecrypt()
       } else if (this.file === null) {
         this.$Notice.warning({
           title: '未选择文件',
-          desc: '请选择xls或xlxs格式的文件进行解密操作。'
-        })
-      } else {
-        this.$Notice.warning({
-          title: '参数不全',
-          desc: '请选择解密属性和解密算法。'
+          desc: '请选择加密的文件进行操作'
         })
       }
       return false
@@ -250,15 +246,11 @@ export default {
       console.log(this.file)
       let formData = new FormData()
       formData.append('file', this.file)
-      formData.append('arrSelect', this.searchValue)
-      formData.append('type', 1)
-      DecryptExcel(formData).then(res => {
+      formData.append('username', this.$store.getters.userName)
+      DecryptBF(formData).then(res => {
         console.log(res)
         if (res.data === 1) {
           this.$Message.success('解密成功')
-          this.initUpload()
-        } else if (res.data === 0) {
-          this.$Message.pop('部分解密成功')
           this.initUpload()
         } else {
           this.$Message.error('解密失败')
