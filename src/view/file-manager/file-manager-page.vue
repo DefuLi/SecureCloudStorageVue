@@ -225,6 +225,8 @@ export default {
       // console.log(file)
       this.uploadOptions.parentPathId = file.parentPathId
       this.uploadOptions.pathId = file.pathId
+      this.uploadOptions.userName = this.$store.getters.userName
+      console.log(this.uploadOptions.userName)
       cb()
     },
     download (data, func) {
