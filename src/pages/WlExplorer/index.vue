@@ -734,7 +734,8 @@ export default {
         this.routerActive(_next, _next.data)
       } else {
         if (this.path.level === 1) return
-        let _pid = this.file.pid !== guid ? this.file.pid : ''
+        let _pid = this.file.pid !== guid ? '' : ''
+        // let _pid = this.file.pid !== guid ? this.file.pid : ''
         let _parent_history = this.path.history.find((i) => i.id === _pid)
         if (_parent_history) {
           this.path.history.splice(
