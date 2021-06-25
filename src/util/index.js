@@ -79,7 +79,7 @@ function arrayToTree (
     let has_children = children_array.length > 0
     if (
       has_children ||
-      (!has_children && root_pid.includes(item[options.pid]))
+                (!has_children && root_pid.includes(item[options.pid]))
     ) {
       array_.push(item)
     }
@@ -124,7 +124,50 @@ function splicParentsUntil (data, coordinate, options = {
  * 处理下载接口返回的文件流数据
  * @param {*} res http请求返回数据
  */
-function download (res) {
+function download (res, name) {
+  const typeDic = {
+    docx: 'application/msword',
+    doc: 'application/msword',
+    bin: 'application/octet-stream',
+    exe: 'application/octet-stream',
+    so: 'application/octet-stream',
+    dll: 'application/octet-stream',
+    pdf: 'application/pdf',
+    ai: 'application/postscript',
+    xls: 'application/vnd.ms-excel',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ppt: 'application/vnd.ms-powerpoint',
+    dir: 'application/x-director',
+    js: 'application/x-javascript',
+    swf: 'application/x-shockwave-flash',
+    xhtml: 'application/xhtml+xml',
+    xht: 'application/xhtml+xml',
+    zip: 'application/zip',
+    mid: 'audio/midi',
+    midi: 'audio/midi',
+    mp3: 'audio/mpeg',
+    rm: 'audio/x-pn-realaudio',
+    rpm: 'audio/x-pn-realaudio-plugin',
+    wav: 'audio/x-wav',
+    bmp: 'image/bmp',
+    gif: 'image/gif',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpeg',
+    png: 'image/png',
+    css: 'text/css',
+    html: 'text/html',
+    htm: 'text/html',
+    txt: 'text/plain',
+    xsl: 'text/xml',
+    xml: 'text/xml',
+    mpeg: 'video/mpeg',
+    mpg: 'video/mpeg',
+    avi: 'video/x-msvideo',
+    movie: 'video/x-sgi-movie'
+  }
+
+  console.log('download res')
+  console.log(res)
   // 错误处理
   if (res.data.type === 'application/json') {
     let reader = new FileReader()
@@ -140,7 +183,7 @@ function download (res) {
     return
   }
   // 下载处理
-  let filename = 'content-disposition' in res.headers
+  let filename = res.headers === 'content-disposition'
     ? decodeURIComponent(
       res.headers['content-disposition']
         .split(';')[1]
@@ -148,13 +191,20 @@ function download (res) {
         .replace(/"/g, '')
     )
     : '下载文件'
+  // let filename = res.headers
   try {
     if (window.navigator.msSaveOrOpenBlob) {
       navigator.msSaveBlob(res.data, filename)
     } else {
-      let blob = new Blob([res.data], {
-        type: 'application/vnd.ms-excel'
-      })
+      // let blob = new Blob([res.data], {
+      //         type: 'application/vnd.ms-excel'
+      //     })
+      // const fileNameGroup = filename
+      console.log(name)
+      const fileNameGroup = name.split('.')
+      const fileType = fileNameGroup[fileNameGroup.length - 1].toLowerCase()
+      console.log(fileType)
+      let blob = new Blob([res.data], { type: typeDic[fileType] })
       let url = URL.createObjectURL(blob)
       let link = document.createElement('a')
       link.setAttribute('href', url)

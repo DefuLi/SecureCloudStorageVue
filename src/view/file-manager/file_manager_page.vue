@@ -227,11 +227,12 @@ export default {
       this.uploadOptions.parentPathId = file.parentPathId
       this.uploadOptions.pathId = file.pathId
       this.uploadOptions.userName = this.$store.getters.userName
-      console.log(this.uploadOptions.userName)
       cb()
     },
     download (data, func) {
-      console.log(data, func)
+      console.log('download')
+      console.log(data)
+      // console.log(data, func)
     },
     /**
      * 根据关键词搜索文件

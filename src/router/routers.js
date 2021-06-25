@@ -99,6 +99,26 @@ export default [
     ]
   },
   {
+    path: '/registration_approval',
+    name: 'registration_approval',
+    component: Main,
+    meta: {
+      // access: ['admin'],
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'registration_approval',
+        name: '用户注册审批',
+        meta: {
+          icon: '_qq',
+          title: '用户注册审批'
+        },
+        component: () => import('@/view/registration-approval/registration-approval-page.vue')
+      }
+    ]
+  },
+  {
     path: '/BF',
     name: 'BF文件加解密',
     meta: {

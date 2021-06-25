@@ -380,13 +380,13 @@ import fileView from '@/components/file-view.vue' // 导入预览组件
 import fadeIn from '@/components/fade-in.vue' // 引入滑入组件
 import uploadItem from '@/components/upload-item' // 导入导入组件
 import { arrayToTree, splicParentsUntil, download } from '@/util' // 导入组装树函数、拼接路径函数
+import { downloadFile } from '@/api' // api接口
 const guid = '00000000-0000-0000-0000-000000000000'
 export default {
   name: 'wlExplorer',
   components: { submitBtn, fileView, fadeIn, uploadItem },
   data () {
     return {
-
       load: {
         del: false, // 删除
         move: false, // 移动
@@ -715,8 +715,38 @@ export default {
         })
         return
       }
-      this.$emit('download', this.file_checked_data, download)
+      console.log('wlDownload')
+      console.log(this.file_checked_data[0].id)
+      downloadFile(this.file_checked_data[0].id).then((data) => {
+        console.log('data')
+        console.log(data)
+        this.downloadFile = data
+        this.$emit('download', this.file_checked_data, download(data, this.file_checked_data[0].name))
+        // let blob = new Blob([data.data])
+        //     let url = URL.createObjectURL(blob)
+        //     let link = document.createElement('a')
+        //     link.setAttribute('href', url)
+        //     link.setAttribute('download', file_checked_data[0].name)
+        //     link.style.display = 'none'
+        //     document.body.appendChild(link)
+        //     link.click()
+        //     URL.revokeObjectURL(url) // 释放URL 对象
+        //     document.body.removeChild(link)
+        // const reader = new FileReader()
+        // reader.readAsDataURL(blob)
+        // reader.onload = (e) => {
+        //   const a = document.createElement("a")
+        //   a.download = this.file_checked_data[0].name
+        //   a.href = e.target.result
+        //   document.body.appendChild(a)
+        //   a.click()
+        //   document.body.removeChild(a)
+        // }
+      })
+      // this.$emit('download', this.file_checked_data, download(this.downloadFile.data))
+      // this.$emit('download', this.file_checked_data, download)
     },
+
     // 前进后退按钮操作
     pathBtn (type) {
       if (type === 'prv') {
