@@ -963,6 +963,7 @@ export default {
       this.self_data.forEach((i) => (i._checked = false))
       val.forEach((i) => (i._checked = true))
       this.file_checked_data = val
+      this.$emit('bfuploadBefore', this.file_checked_data)
     },
     // 列表模式记录多选数据
     listItemCheck (check, val) {

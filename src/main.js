@@ -16,7 +16,6 @@ import TreeTable from 'tree-table-vue'
 import VOrgTree from 'v-org-tree'
 import 'v-org-tree/dist/v-org-tree.css'
 import './plugin/element.js'
-
 // 引入树形下拉框
 import wl from 'wl-vue-select'
 import 'wl-vue-select/lib/wl-vue-select.css'

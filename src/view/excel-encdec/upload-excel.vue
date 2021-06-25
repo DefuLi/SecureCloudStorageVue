@@ -270,9 +270,6 @@ export default {
         if (res.data === 1) {
           this.$Message.success('加密成功')
           this.initUpload()
-        } else if (res.data === 0) {
-          this.$Message.success('部分加密成功')
-          this.initUpload()
         } else {
           this.$Message.error('加密失败')
           this.initUpload()

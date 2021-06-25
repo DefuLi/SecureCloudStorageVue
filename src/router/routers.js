@@ -33,7 +33,7 @@ export default [
           icon: 'ios-bug',
           title: '文件管理器'
         },
-        component: () => import('@/view/file-manager/file-manager-page')
+        component: () => import('@/view/file-manager/file_manager_page')
       }
     ]
   },
