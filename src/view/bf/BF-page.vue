@@ -18,6 +18,14 @@
         </Card>
       </i-col>
     </Row>
+    <Card>
+      <div>
+        <h1>文件管理器</h1>
+        <filemanager
+          @bfuploadBefore="bfuploadBefore"
+        ></filemanager>
+      </div>
+    </Card>
     <Row :gutter="14" style="margin-top: 14px;">
       <i-col>
         <Card>
@@ -56,6 +64,7 @@
             <td class="td-space"></td>
             <td>
               <Button icon="ios-cloud-upload-outline" @click="handleBeforePropertyDecrypt()">BF解密</Button>
+              <!--<a class='link-type' href='javascript:void(0)' icon="ios-cloud-upload-outline" @click="handleBeforePropertyDecrypt()">BF解密</a>-->
             </td>
             <td class="td-space"></td>
             <td>
@@ -63,12 +72,13 @@
             </td>
             <td class="td-space"></td>
             <td>
-              <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadExcel">打开文件</Button>
+              <Button icon="ios-cloud-upload-outline" @click="bfupload()">云端BF加密</Button>
             </td>
             <td class="td-space"></td>
             <td>
-              <Button icon="ios-cloud-upload-outline" :loading="uploadLoading" @click="handleUploadFile">打开目录</Button>
+              <Button icon="ios-cloud-upload-outline" @click="bfdownload()">云端BF解密</Button>
             </td>
+            <td class="td-space"></td>
           </Row>
         </Card>
       </i-col>
@@ -77,11 +87,16 @@
 </template>
 <script>
 // import excel from '@/libs/excel'
-import { UploadExcel } from '@/api/encrypt'
-import { EncryptBF, DecryptBF } from '@/api/bf'
+import file_manager_page from '@/view/file-manager/file_manager_page.vue'
+import { EncryptBF, DecryptBF, Encryptbfupload, Encryptbfdownload } from '@/api/bf'
+import InforCard from '../../components/info-card/infor-card'
 // import { propertyEncrypt, propertyDecrypt } from '@/api/encrypt'
 export default {
   name: 'excel-ende',
+  components: {
+    InforCard,
+    'filemanager': file_manager_page
+  },
   data () {
     return {
       uploadLoading: false,
@@ -93,6 +108,7 @@ export default {
       file: null,
       filePath: [],
       tableData: [],
+      clouddata: [],
       tableTitle: [],
       tableLoading: false,
       searchKey: '-1',
@@ -130,54 +146,8 @@ export default {
         title: '请选择加解密属性'
       }]
     },
-    initMethod () {
-      this.searchMethod = this.methodz[0].key
-      // console.log('初始化')
-      // console.log(this.searchMethod)
-    },
-    getSelected () {
-      // console.log(this.searchMethod)
-      // console.log(this.searchKey)
-      if (this.searchMethod !== null && this.searchMethod !== '-1' && this.searchKey !== '-1') {
-        if (this.searchValue === null) {
-          this.searchValue = []
-          this.showValue = []
-          this.searchValue.push(this.searchKey + ',' + this.searchMethod)
-          this.showValue.push(this.columns[this.searchKey].title + ',' + this.methodz[this.searchMethod].title)
-        } else {
-          this.searchValue = this.searchValue + '#' + this.searchKey + ',' + this.searchMethod
-          this.showValue = this.showValue + '；' + this.columns[this.searchKey].title + ',' + this.methodz[this.searchMethod].title
-        }
-        // this.searchValue.push(this.columns[this.searchKey + 1].title + ',' + this.methodz[this.searchMethod].title)
-        this.searchKey = this.columns[0].key
-      }
-    },
     handleUploadFile () {
       this.initUpload()
-    },
-    handleUploadExcel () {
-      this.initUpload()
-      this.uploadLoading = true
-      this.tableLoading = true
-      // this.showProgress = true
-      UploadExcel().then(res => {
-        console.log(res)
-        console.log(JSON.parse(res.data.tableData))
-        var index = 1
-        res.data.tableHead.forEach(item => this.tableTtl.push({ key: item, title: item }))
-        res.data.tableHead.forEach(item => this.columns.push({ key: index++, title: item }))
-        JSON.parse(res.data.tableData).forEach(item => this.tableDta.push(item))
-        this.tableTitle = this.tableTtl
-        this.tableData = this.tableDta
-        // this.tableTitle = res.data.tableHead
-        this.showRemoveFile = true
-        this.uploadLoading = false
-        this.tableLoading = false
-        this.file = res.data.filename
-        // this.file.name = res.data.filename
-        this.filePath = res.data.filename
-        console.log(this.file.name)
-      })
     },
     // handlePropertyEncrypt () {
     //   console.log(this.searchValue)
@@ -247,16 +217,33 @@ export default {
       let formData = new FormData()
       formData.append('file', this.file)
       formData.append('username', this.$store.getters.userName)
-      DecryptBF(formData).then(res => {
-        console.log(res)
-        if (res.data === 1) {
-          this.$Message.success('解密成功')
-          this.initUpload()
-        } else {
-          this.$Message.error('解密失败')
-          this.initUpload()
+      DecryptBF(formData).then((data) => {
+        console.log(data)
+        console.log(data.data.type)
+        if (!data) {
+          return
         }
+        let url = window.URL.createObjectURL(data.data)
+        let link = document.createElement('a')
+        link.style.display = 'none'
+        link.href = url
+        // 获取文件名
+        let fileName = '下载文件' + data.data.type
+        // download 属性定义了下载链接的地址而不是跳转路径
+        link.setAttribute('download', fileName)
+        document.body.appendChild(link)
+        link.click()
       })
+
+      //   console.log(res)
+      //   if (res.data === 1) {
+      //     this.$Message.success('解密成功')
+      //     this.initUpload()
+      //   } else {
+      //     this.$Message.error('解密失败')
+      //     this.initUpload()
+      //   }
+      // })
     },
     handleRemove () {
       this.initUpload()
@@ -292,6 +279,63 @@ export default {
         //  const data = e.target.result
         //  console.log(data)
       }
+    },
+    bfuploadBefore (data) {
+      console.log(data)
+      // console.log(data[0].createUserName)
+      this.clouddata = data
+    },
+    bfupload () {
+      this.clouddata.forEach(item => {
+        let formData = new FormData()
+        // console.log(item.createUserName)
+        // console.log(item.ParentId)
+        // console.log(this.$store.getters.userName)
+        // console.log(item.Name)
+        formData.append('CreateUserName', item.CreateUserName)
+        formData.append('ParentId', item.ParentId)
+        formData.append('LoginUserName', this.$store.getters.userName)
+        formData.append('FileName', item.Name)
+        console.log(formData)
+        Encryptbfupload(formData).then(res => {
+          console.log(res)
+          if (res.data === 'nofile') {
+            this.$Message.error('云端没有该文件')
+          } else if (res.data === 'nocert') {
+            this.$Message.error('该文件没有证书权限')
+          } else if (res.data === 'failed') {
+            this.$Message.error('该文件加密失败')
+          } else {
+            this.$Message.success(res.data + '加密成功')
+          }
+        })
+      })
+    },
+    bfdownload () {
+      this.clouddata.forEach(item => {
+        let formData = new FormData()
+        // console.log(item.createUserName)
+        // console.log(item.ParentId)
+        // console.log(this.$store.getters.userName)
+        // console.log(item.Name)
+        formData.append('CreateUserName', item.CreateUserName)
+        formData.append('ParentId', item.ParentId)
+        formData.append('LoginUserName', this.$store.getters.userName)
+        formData.append('FileName', item.Name)
+        console.log(formData)
+        Encryptbfdownload(formData).then(res => {
+          console.log(res)
+          if (res.data === 'nofile') {
+            this.$Message.error('云端没有该文件')
+          } else if (res.data === 'nocert') {
+            this.$Message.error('该文件没有解密证书权限')
+          } else if (res.data === 'failed') {
+            this.$Message.error('该文件解密失败')
+          } else {
+            this.$Message.success(res.data + '解密成功')
+          }
+        })
+      })
     }
   },
   created () {

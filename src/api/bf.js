@@ -16,6 +16,28 @@ export const DecryptBF = formData => {
     url: 'bf/bfdecrypt',
     data: formData,
     method: 'post',
+    responseType: 'blob',
+    headers: {
+      // 'Content-Type': 'false'
+    }
+  })
+}
+
+export const Encryptbfupload = formData => {
+  return axios.request({
+    url: 'bf/bfupload',
+    data: formData,
+    method: 'post',
+    headers: {
+      'Content-Type': 'false'
+    }
+  })
+}
+export const Encryptbfdownload = formData => {
+  return axios.request({
+    url: 'bf//bfdownload',
+    data: formData,
+    method: 'post',
     headers: {
       'Content-Type': 'false'
     }

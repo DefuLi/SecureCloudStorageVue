@@ -18,6 +18,7 @@
       @del="fileDel"
       @closeFade="closeOtherLayout(fade)"
       @searchFiles="searchFiles"
+      @bfuploadBefore="bfuploadBefore"
     >
       <!-- 操作文件夹滑入区 -->
       <fadeIn v-show="fade.folder">
@@ -412,6 +413,10 @@ export default {
     // 判断是否文件夹函数
     isFolderFn (row) {
       return row.Type === this.type.folder
+    },
+    bfuploadBefore(data){
+      console.log(data)
+      this.$emit('bfuploadBefore', data)
     }
   },
   // 页面初始化时会执行created()

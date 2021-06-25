@@ -86,6 +86,7 @@ export default {
       formData.append('authorizeduser', this.certList[index].authorizeduser)
       formData.append('authoruser', this.authoruser)
       formData.append('accesstype', this.certList[index].accesstype)
+      // console.log(formData)
       deleteCert(formData)
       rows.splice(index, 1)
       console.log(index)
