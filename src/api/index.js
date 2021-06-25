@@ -48,6 +48,20 @@ export const getFilesByNameApi = (fileName, type, userName) => {
   })
 }
 
+export const downloadFile = (fileInfo) => {
+  let formData = new FormData()
+  const data = {
+    fileInfo
+  }
+  return axios.request({
+    url: 'fileManager/downloadFile',
+    params: data,
+    method: 'post',
+    responseType: 'blob',
+    data: formData
+  })
+}
+
 export const uploadFileApi = (file) => {
   const data = {
     file
