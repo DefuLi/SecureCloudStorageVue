@@ -119,6 +119,26 @@ export default [
     ]
   },
   {
+    path: '/behavior_monitor',
+    name: 'behavior_monitor',
+    component: Main,
+    meta: {
+      // access: ['admin'],
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'behavior_monitor',
+        name: '用户行为监测',
+        meta: {
+          icon: '_qq',
+          title: '用户行为监测'
+        },
+        component: () => import('@/view/user-behavior-monitor/user-behavior-monitor.vue')
+      }
+    ]
+  },
+  {
     path: '/BF',
     name: 'BF文件加解密',
     meta: {
