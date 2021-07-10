@@ -7,6 +7,31 @@ export const getTableData = () => {
   })
 }
 
+export const getRegisters = () => {
+  return axios.request({
+    url: 'manager/getRegisters',
+    method: 'get'
+  })
+}
+
+export const getUserBehavior = () => {
+  return axios.request({
+    url: 'manager/userBehavior',
+    method: 'get'
+  })
+}
+
+export const agree = name => {
+  const data = {
+    name
+  }
+  return axios.request({
+    url: 'manager/approve',
+    method: 'post',
+    params: data
+  })
+}
+
 export const getDragList = () => {
   return axios.request({
     url: 'get_drag_list',
