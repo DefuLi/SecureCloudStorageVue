@@ -1,5 +1,5 @@
 # SecureCloudStorageVue
-甘肃电网，安全云存储项目前端项目，基于Vue2框架。
+安全云存储项目前端项目，基于Vue2框架。
 
 ## Introduction
 
